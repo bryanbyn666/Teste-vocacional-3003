@@ -105,6 +105,56 @@
   }
   @media (max-width:720px){ .faculties{ grid-template-columns:1fr; } }
 
+  .photo-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    overflow:hidden;
+    max-width:380px;
+    margin:44px auto 0;
+    box-shadow: 4px 4px 0 rgba(35,39,53,0.06);
+  }
+  .photo-frame{
+    width:100%;
+    aspect-ratio: 16 / 10;
+    background: var(--paper-2);
+    overflow:hidden;
+    position:relative;
+  }
+  .photo-frame img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .photo-frame.is-empty img{ display:none; }
+  .photo-frame.is-empty::after{
+    content:"Adicione sua imagem aqui — troque o \"src\" da tag <img> pelo caminho do seu arquivo";
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:16px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--ink-soft);
+    border:1px dashed var(--line-strong);
+    margin:8px;
+    border-radius:4px;
+  }
+  .photo-caption{
+    padding:16px 18px 20px;
+  }
+  .photo-caption .eyebrow{ display:block; margin-bottom:8px; }
+  .photo-caption p{
+    color:var(--ink-soft);
+    font-size:13.5px;
+    line-height:1.6;
+    margin:0;
+  }
+
   .faculty-card{
     background:var(--card);
     border:1px solid var(--line);
@@ -469,8 +519,8 @@
     <div class="faculties">
       <article class="faculty-card" data-tag=" UERJ">
         <span class="loc">[Universidade do Estado do Rio de Janeiro] · [Rio de Janeiro, RJ]</span>
-        <h3> UERJ <img src="uerj-logo.png" alt="Logo da UERJ" style="width: 30px; height: auto;"> </h3> 
-        <h6><img src="uerj-campus.jpg" alt="Campus" style="width: 200px; height: auto;" >  Campus Maracanã </h6>
+        <h3> UERJ <img src="src/uerj-logo.png" alt="Logo da UERJ" style="width: 30px; height: auto;"> </h3> 
+        <h6><img src="src/uerj-campus.jpg" alt="Campus" style="width: 200px; height: auto;" >  Campus Maracanã </h6>
         <p>A UERJ é uma das principais universidades públicas do Brasil, reconhecida pela qualidade do ensino, pesquisa e extensão. Possui infraestrutura completa e corpo docente altamente qualificado. Também é referência por seu pioneirismo no sistema de cotas.</p>
         <ul>
           <li>[Diferencial 1]</li>
@@ -481,8 +531,8 @@
 
       <article class="faculty-card" data-tag=" UFRJ">
         <span class="loc">[Universidade Federal do Rio de Janeiro] · [Rio de Janeiro, RJ]</span>
-        <h3> UFRJ <img src="ufrj-logo.png" alt="Logo da UFRJ" style="width: 30px; height: auto;"> </h3>
-        <h6><img src="ufrj-campus.jpg" alt="Campus" style="width: 200px; height: auto;" >  Campus Cidade Universitaria </h6>
+        <h3> UFRJ <img src="src/ufrj-logo.png" alt="Logo da UFRJ" style="width: 30px; height: auto;"> </h3>
+        <h6><img src="src/ufrj-campus.jpg" alt="Campus" style="width: 200px; height: auto;" >  Campus Cidade Universitaria </h6>
         <p>A UFRJ é a primeira universidade federal do Brasil e referência em ensino, pesquisa e inovação. Conta com infraestrutura moderna e professores de excelência. Destaca-se pela produção científica e impacto nacional e internacional. </p>
         <ul>
           <li>[Diferencial 1]</li>
@@ -498,6 +548,15 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </button>
     </div>
+
+    <article class="photo-card">
+      <div class="photo-frame" id="photo-frame">
+        <img src="src/3003.jpeg" alt="[Descrição da imagem]" onerror="this.parentElement.classList.add('is-empty')">
+      </div>
+      <div class="photo-caption">
+        <span class="eyebrow">Turma 3003 do colegio Estadual Olavo Bilac</span>
+      </div>
+    </article>
   </div>
 </section>
 
@@ -559,777 +618,567 @@
 <script>
 const AREAS = [
   { id:'saude', name:'Saúde', tone:'--saude', toneInk:'--saude-ink',
-    courses:['Medicina','Psicologia','Nutrição','Enfermagem','Fisioterapia','Odontologia','Farmácia','Biomedicina'],
+    courses:['Medicina','Enfermagem','Psicologia','Nutrição','Farmácia','Biomedicina','Fisioterapia','Educação Física'],
     questions:[
-      { q:'O que mais desperta seu interesse?', o:[
-        {t:'Diagnosticar e tratar doenças complexas', c:['Medicina']},
-        {t:'Compreender emoções e o comportamento humano', c:['Psicologia']},
-        {t:'Alimentação e seus efeitos na saúde', c:['Nutrição']},
-        {t:'Cuidar diretamente de pacientes no dia a dia', c:['Enfermagem']}
+      { q:'O que mais te motiva em uma profissão?', o:[
+        {t:'Diagnosticar e tratar doenças, ajudando pessoas em momentos importantes.', c:['Medicina']},
+        {t:'Compreender emoções, pensamentos e comportamentos.', c:['Psicologia']},
+        {t:'Promover saúde por meio de hábitos e prevenção.', c:['Nutrição']},
+        {t:'Fazer descobertas científicas que possam melhorar tratamentos.', c:['Biomedicina']}
       ]},
-      { q:'Qual desses temas mais te atrai?', o:[
-        {t:'O corpo em movimento e a reabilitação', c:['Fisioterapia']},
-        {t:'Saúde bucal e procedimentos odontológicos', c:['Odontologia']},
-        {t:'Medicamentos e como agem no corpo', c:['Farmácia']},
-        {t:'Exames, diagnósticos e pesquisa laboratorial', c:['Biomedicina']}
+      { q:'Qual atividade parece mais interessante?', o:[
+        {t:'Acompanhar pacientes durante o tratamento e oferecer cuidados.', c:['Enfermagem']},
+        {t:'Fazer pesquisas e analisar informações científicas.', c:['Biomedicina']},
+        {t:'Orientar pessoas sobre alimentação e qualidade de vida.', c:['Nutrição']},
+        {t:'Ajudar alguém a recuperar seus movimentos.', c:['Fisioterapia']}
       ]},
-      { q:'Se você pudesse escolher um assunto para estudar a fundo, qual seria?', o:[
-        {t:'Diagnosticar e tratar doenças complexas', c:['Medicina']},
-        {t:'Alimentação e seus efeitos na saúde', c:['Nutrição']},
-        {t:'O corpo em movimento e a reabilitação', c:['Fisioterapia']},
-        {t:'Medicamentos e como agem no corpo', c:['Farmácia']}
+      { q:'O que desperta mais sua curiosidade?', o:[
+        {t:'O funcionamento do corpo humano e suas doenças.', c:['Medicina']},
+        {t:'A mente humana e o comportamento das pessoas.', c:['Psicologia']},
+        {t:'Como os medicamentos agem no organismo.', c:['Farmácia']},
+        {t:'Como melhorar o desempenho físico e esportivo.', c:['Educação Física']}
       ]},
-      { q:'O que prende mais a sua atenção?', o:[
-        {t:'Compreender emoções e o comportamento humano', c:['Psicologia']},
-        {t:'Cuidar diretamente de pacientes no dia a dia', c:['Enfermagem']},
-        {t:'Saúde bucal e procedimentos odontológicos', c:['Odontologia']},
-        {t:'Exames, diagnósticos e pesquisa laboratorial', c:['Biomedicina']}
+      { q:'Qual habilidade mais combina com você?', o:[
+        {t:'Tomar decisões em situações importantes.', c:['Medicina']},
+        {t:'Escutar e acolher pessoas.', c:['Psicologia']},
+        {t:'Organização e atenção aos detalhes.', c:['Farmácia']},
+        {t:'Incentivar pessoas a mudarem seus hábitos.', c:['Nutrição']}
       ]},
-      { q:'Qual desses campos de conhecimento mais te fascina?', o:[
-        {t:'Diagnosticar e tratar doenças complexas', c:['Medicina']},
-        {t:'Cuidar diretamente de pacientes no dia a dia', c:['Enfermagem']},
-        {t:'Saúde bucal e procedimentos odontológicos', c:['Odontologia']},
-        {t:'Medicamentos e como agem no corpo', c:['Farmácia']}
-      ]},
-      { q:'Qual habilidade mais te representa?', o:[
-        {t:'Tomar decisões rápidas em situações de risco', c:['Medicina']},
-        {t:'Ouvir com atenção e empatia', c:['Psicologia']},
-        {t:'Montar planos e orientar mudanças de hábito', c:['Nutrição']},
-        {t:'Prestar cuidados com atenção e acolhimento', c:['Enfermagem']}
-      ]},
-      { q:'Em que tipo de tarefa você se sai melhor?', o:[
-        {t:'Trabalhar com exercícios terapêuticos', c:['Fisioterapia']},
-        {t:'Trabalho manual preciso e delicado', c:['Odontologia']},
-        {t:'Testes e experimentos com precisão técnica', c:['Farmácia']},
-        {t:'Analisar dados e resultados com rigor científico', c:['Biomedicina']}
-      ]},
-      { q:'Qual desses talentos você reconhece em você mesmo?', o:[
-        {t:'Tomar decisões rápidas em situações de risco', c:['Medicina']},
-        {t:'Montar planos e orientar mudanças de hábito', c:['Nutrição']},
-        {t:'Trabalhar com exercícios terapêuticos', c:['Fisioterapia']},
-        {t:'Testes e experimentos com precisão técnica', c:['Farmácia']}
-      ]},
-      { q:'Se te pedissem para resolver um problema, qual abordagem você usaria?', o:[
-        {t:'Ouvir com atenção e empatia', c:['Psicologia']},
-        {t:'Prestar cuidados com atenção e acolhimento', c:['Enfermagem']},
-        {t:'Trabalho manual preciso e delicado', c:['Odontologia']},
-        {t:'Analisar dados e resultados com rigor científico', c:['Biomedicina']}
-      ]},
-      { q:'O que as pessoas mais elogiam em você?', o:[
-        {t:'Tomar decisões rápidas em situações de risco', c:['Medicina']},
-        {t:'Prestar cuidados com atenção e acolhimento', c:['Enfermagem']},
-        {t:'Trabalho manual preciso e delicado', c:['Odontologia']},
-        {t:'Testes e experimentos com precisão técnica', c:['Farmácia']}
-      ]},
-      { q:'Onde você se imagina trabalhando no futuro?', o:[
-        {t:'Hospital ou pronto-socorro', c:['Medicina']},
-        {t:'Consultório, com atendimentos individuais', c:['Psicologia']},
-        {t:'Clínica de nutrição ou consultório próprio', c:['Nutrição']},
-        {t:'Hospital, UBS ou unidade de saúde', c:['Enfermagem']}
+      { q:'Você prefere trabalhar…', o:[
+        {t:'Em contato direto com pacientes.', c:['Enfermagem']},
+        {t:'Em laboratórios realizando pesquisas.', c:['Biomedicina']},
+        {t:'Em consultório atendendo individualmente.', c:['Psicologia']},
+        {t:'Em ambientes esportivos.', c:['Educação Física']}
       ]},
       { q:'Qual ambiente de trabalho mais combina com você?', o:[
-        {t:'Clínica de reabilitação ou centro esportivo', c:['Fisioterapia']},
-        {t:'Consultório odontológico próprio', c:['Odontologia']},
-        {t:'Farmácia, indústria ou laboratório farmacêutico', c:['Farmácia']},
-        {t:'Laboratório de análises clínicas ou pesquisa', c:['Biomedicina']}
+        {t:'Hospitais, emergências ou centros cirúrgicos.', c:['Medicina']},
+        {t:'Laboratórios de pesquisa, análises clínicas ou indústria farmacêutica.', c:['Farmácia','Biomedicina']},
+        {t:'Consultório ou clínica particular.', c:['Psicologia','Nutrição']},
+        {t:'Academias, clubes e centros esportivos.', c:['Educação Física']}
       ]},
-      { q:'Em qual desses cenários você se sentiria mais à vontade?', o:[
-        {t:'Hospital ou pronto-socorro', c:['Medicina']},
-        {t:'Clínica de nutrição ou consultório próprio', c:['Nutrição']},
-        {t:'Clínica de reabilitação ou centro esportivo', c:['Fisioterapia']},
-        {t:'Farmácia, indústria ou laboratório farmacêutico', c:['Farmácia']}
+      { q:'O que mais te deixaria satisfeito(a)?', o:[
+        {t:'Recuperar alguém de uma doença.', c:['Medicina']},
+        {t:'Descobrir a causa de um problema de saúde.', c:['Biomedicina']},
+        {t:'Melhorar os hábitos e a alimentação de uma pessoa.', c:['Nutrição']},
+        {t:'Ajudar alguém a superar dificuldades emocionais.', c:['Psicologia']}
       ]},
-      { q:'Se pudesse escolher seu local de trabalho ideal, qual seria?', o:[
-        {t:'Consultório, com atendimentos individuais', c:['Psicologia']},
-        {t:'Hospital, UBS ou unidade de saúde', c:['Enfermagem']},
-        {t:'Consultório odontológico próprio', c:['Odontologia']},
-        {t:'Laboratório de análises clínicas ou pesquisa', c:['Biomedicina']}
+      { q:'Você prefere…', o:[
+        {t:'Agir rapidamente em situações de emergência.', c:['Enfermagem']},
+        {t:'Investigar e descobrir soluções.', c:['Farmácia']},
+        {t:'Orientar pessoas para uma vida saudável.', c:['Nutrição']},
+        {t:'Motivar pessoas por meio da prática física.', c:['Educação Física']}
       ]},
-      { q:'Qual rotina profissional mais combina com seu estilo?', o:[
-        {t:'Hospital ou pronto-socorro', c:['Medicina']},
-        {t:'Hospital, UBS ou unidade de saúde', c:['Enfermagem']},
-        {t:'Consultório odontológico próprio', c:['Odontologia']},
-        {t:'Farmácia, indústria ou laboratório farmacêutico', c:['Farmácia']}
+      { q:'Se pudesse escolher um projeto…', o:[
+        {t:'Combater doenças e salvar vidas.', c:['Medicina']},
+        {t:'Desenvolver novos medicamentos e tratamentos.', c:['Farmácia']},
+        {t:'Criar programas de alimentação saudável.', c:['Nutrição']},
+        {t:'Desenvolver pesquisas sobre doenças.', c:['Biomedicina']}
       ]},
-      { q:'O que mais te motivaria em uma carreira?', o:[
-        {t:'Salvar vidas em emergências', c:['Medicina']},
-        {t:'Ajudar pessoas a lidar com ansiedade e traumas', c:['Psicologia']},
-        {t:'Prevenir doenças através da alimentação', c:['Nutrição']},
-        {t:'Estar ao lado do paciente em todos os momentos', c:['Enfermagem']}
+      { q:'O que você faria com mais prazer?', o:[
+        {t:'Diagnosticar doenças.', c:['Medicina']},
+        {t:'Analisar exames laboratoriais.', c:['Biomedicina']},
+        {t:'Elaborar planos alimentares.', c:['Nutrição']},
+        {t:'Ajudar na recuperação física de pacientes.', c:['Fisioterapia']}
       ]},
-      { q:'Qual causa você gostaria de defender profissionalmente?', o:[
-        {t:'Ajudar pessoas a recuperar sua mobilidade', c:['Fisioterapia']},
-        {t:'Devolver sorrisos e autoestima às pessoas', c:['Odontologia']},
-        {t:'Desenvolver tratamentos que ajudam pacientes', c:['Farmácia']},
-        {t:'Contribuir para diagnósticos precisos', c:['Biomedicina']}
+      { q:'Qual situação combina mais com você?', o:[
+        {t:'Resolver uma emergência médica.', c:['Enfermagem']},
+        {t:'Trabalhar com pesquisas científicas.', c:['Farmácia']},
+        {t:'Conversar e entender pacientes.', c:['Psicologia']},
+        {t:'Ensinar exercícios e promover saúde.', c:['Educação Física']}
       ]},
-      { q:'O que te faria sentir realizado no trabalho?', o:[
-        {t:'Salvar vidas em emergências', c:['Medicina']},
-        {t:'Prevenir doenças através da alimentação', c:['Nutrição']},
-        {t:'Ajudar pessoas a recuperar sua mobilidade', c:['Fisioterapia']},
-        {t:'Desenvolver tratamentos que ajudam pacientes', c:['Farmácia']}
+      { q:'O que mais te inspira?', o:[
+        {t:'Fazer diferença na vida das pessoas.', c:['Enfermagem']},
+        {t:'A ciência e novas descobertas.', c:['Biomedicina']},
+        {t:'Saúde, alimentação e prevenção.', c:['Nutrição']},
+        {t:'Superação e recuperação.', c:['Fisioterapia']}
       ]},
-      { q:'Se pudesse causar um impacto no mundo, qual seria?', o:[
-        {t:'Ajudar pessoas a lidar com ansiedade e traumas', c:['Psicologia']},
-        {t:'Estar ao lado do paciente em todos os momentos', c:['Enfermagem']},
-        {t:'Devolver sorrisos e autoestima às pessoas', c:['Odontologia']},
-        {t:'Contribuir para diagnósticos precisos', c:['Biomedicina']}
+      { q:'Você se sente mais confortável ao…', o:[
+        {t:'Trabalhar sob pressão e tomar decisões rápidas.', c:['Medicina']},
+        {t:'Trabalhar com precisão e análises.', c:['Farmácia']},
+        {t:'Trabalhar ouvindo pessoas.', c:['Psicologia']},
+        {t:'Trabalhar com movimento e desempenho físico.', c:['Educação Física']}
       ]},
-      { q:'O que te move a querer seguir essa área?', o:[
-        {t:'Salvar vidas em emergências', c:['Medicina']},
-        {t:'Estar ao lado do paciente em todos os momentos', c:['Enfermagem']},
-        {t:'Devolver sorrisos e autoestima às pessoas', c:['Odontologia']},
-        {t:'Desenvolver tratamentos que ajudam pacientes', c:['Farmácia']}
+      { q:'Qual conteúdo mais desperta sua curiosidade?', o:[
+        {t:'Anatomia e fisiologia.', c:['Medicina']},
+        {t:'Química, medicamentos e substâncias.', c:['Farmácia']},
+        {t:'Alimentação e metabolismo.', c:['Nutrição']},
+        {t:'Comportamento humano.', c:['Psicologia']}
       ]},
-      { q:'No seu dia a dia ideal de trabalho, você estaria...?', o:[
-        {t:'Examinando pacientes e definindo tratamentos', c:['Medicina']},
-        {t:'Conduzindo sessões de terapia e escuta', c:['Psicologia']},
-        {t:'Elaborando cardápios e acompanhando pacientes', c:['Nutrição']},
-        {t:'Administrando cuidados e acompanhando a recuperação', c:['Enfermagem']}
+      { q:'Qual atividade faria você perder a noção do tempo?', o:[
+        {t:'Resolver casos clínicos.', c:['Medicina']},
+        {t:'Fazer experimentos científicos.', c:['Biomedicina']},
+        {t:'Planejar uma rotina saudável.', c:['Nutrição']},
+        {t:'Criar treinos e acompanhar resultados.', c:['Educação Física']}
       ]},
-      { q:'Qual dessas atividades você faria de bom grado?', o:[
-        {t:'Aplicando técnicas de reabilitação física', c:['Fisioterapia']},
-        {t:'Realizando procedimentos e tratamentos dentários', c:['Odontologia']},
-        {t:'Manipulando e orientando sobre medicamentos', c:['Farmácia']},
-        {t:'Realizando exames e análises laboratoriais', c:['Biomedicina']}
+      { q:'Se pudesse acompanhar um profissional durante uma semana, escolheria alguém que…', o:[
+        {t:'Trabalha em um hospital.', c:['Enfermagem']},
+        {t:'Trabalha em um laboratório.', c:['Biomedicina']},
+        {t:'Atende em consultório.', c:['Psicologia']},
+        {t:'Trabalha em academias ou centros esportivos.', c:['Educação Física']}
       ]},
-      { q:'Se surgisse um desafio no trabalho, qual você prefere enfrentar?', o:[
-        {t:'Examinando pacientes e definindo tratamentos', c:['Medicina']},
-        {t:'Elaborando cardápios e acompanhando pacientes', c:['Nutrição']},
-        {t:'Aplicando técnicas de reabilitação física', c:['Fisioterapia']},
-        {t:'Manipulando e orientando sobre medicamentos', c:['Farmácia']}
+      { q:'Qual tipo de problema você gostaria de ajudar a resolver?', o:[
+        {t:'Doenças e condições que afetam a saúde.', c:['Medicina']},
+        {t:'Dificuldades emocionais e psicológicas.', c:['Psicologia']},
+        {t:'Problemas relacionados à alimentação e hábitos.', c:['Nutrição']},
+        {t:'Lesões e limitações de movimento.', c:['Fisioterapia']}
       ]},
-      { q:'Qual tarefa prática mais te agrada?', o:[
-        {t:'Conduzindo sessões de terapia e escuta', c:['Psicologia']},
-        {t:'Administrando cuidados e acompanhando a recuperação', c:['Enfermagem']},
-        {t:'Realizando procedimentos e tratamentos dentários', c:['Odontologia']},
-        {t:'Realizando exames e análises laboratoriais', c:['Biomedicina']}
+      { q:'Qual descoberta seria mais interessante para você?', o:[
+        {t:'Um novo tratamento para uma doença.', c:['Farmácia']},
+        {t:'Uma nova forma de diagnosticar doenças.', c:['Biomedicina']},
+        {t:'Uma estratégia para melhorar o desempenho físico.', c:['Educação Física']},
+        {t:'Uma forma de melhorar o cuidado dos pacientes.', c:['Enfermagem']}
       ]},
-      { q:'Imagine um dia comum de trabalho: o que você estaria fazendo?', o:[
-        {t:'Examinando pacientes e definindo tratamentos', c:['Medicina']},
-        {t:'Administrando cuidados e acompanhando a recuperação', c:['Enfermagem']},
-        {t:'Realizando procedimentos e tratamentos dentários', c:['Odontologia']},
-        {t:'Manipulando e orientando sobre medicamentos', c:['Farmácia']}
+      { q:'Qual rotina profissional parece mais interessante?', o:[
+        {t:'Avaliar pacientes e definir tratamentos.', c:['Medicina']},
+        {t:'Acompanhar pessoas durante sua recuperação.', c:['Enfermagem']},
+        {t:'Pesquisar, testar e desenvolver soluções.', c:['Farmácia']},
+        {t:'Estudar doenças por meio de exames e análises.', c:['Biomedicina']}
+      ]},
+      { q:'Se pudesse criar uma iniciativa na área da saúde, seria:', o:[
+        {t:'Uma campanha de prevenção de doenças.', c:['Medicina']},
+        {t:'Um projeto de apoio à saúde mental.', c:['Psicologia']},
+        {t:'Um programa de alimentação saudável.', c:['Nutrição']},
+        {t:'Um projeto de incentivo ao esporte e bem-estar.', c:['Educação Física']}
       ]}
     ]
   },
   { id:'humanas', name:'Ciências humanas', tone:'--humanas', toneInk:'--humanas-ink',
-    courses:['Direito','Pedagogia','História','Geografia','Serviço Social','Ciências Sociais','Relações Internacionais','Administração'],
+    courses:['Direito','Psicologia','Pedagogia','História','Administração','Ciências Sociais','Geografia','Relações Internacionais'],
     questions:[
-      { q:'O que mais desperta seu interesse?', o:[
-        {t:'Justiça, leis e defesa de direitos', c:['Direito']},
-        {t:'Ensinar e formar pessoas', c:['Pedagogia']},
-        {t:'O passado e suas transformações', c:['História']},
-        {t:'Espaço, território e meio ambiente', c:['Geografia']}
+      { q:'O que mais te motiva em uma profissão?', o:[
+        {t:'Defender direitos e buscar justiça na sociedade.', c:['Direito']},
+        {t:'Compreender pessoas, emoções e comportamentos.', c:['Psicologia']},
+        {t:'Ajudar no desenvolvimento e aprendizado das pessoas.', c:['Pedagogia']},
+        {t:'Estudar acontecimentos e transformações da humanidade.', c:['História']}
       ]},
-      { q:'Qual desses temas mais te atrai?', o:[
-        {t:'Questões sociais e desigualdade', c:['Serviço Social']},
-        {t:'Comportamento de grupos e sociedades', c:['Ciências Sociais']},
-        {t:'Diplomacia e relações entre países', c:['Relações Internacionais']},
-        {t:'Gestão de empresas e de pessoas', c:['Administração']}
+      { q:'Qual atividade parece mais interessante?', o:[
+        {t:'Resolver conflitos e interpretar leis.', c:['Direito']},
+        {t:'Conversar com pessoas e entender suas histórias.', c:['Psicologia']},
+        {t:'Ensinar e criar formas de aprendizagem.', c:['Pedagogia']},
+        {t:'Pesquisar acontecimentos do passado.', c:['História']}
       ]},
-      { q:'Se você pudesse escolher um assunto para estudar a fundo, qual seria?', o:[
-        {t:'Justiça, leis e defesa de direitos', c:['Direito']},
-        {t:'O passado e suas transformações', c:['História']},
-        {t:'Questões sociais e desigualdade', c:['Serviço Social']},
-        {t:'Diplomacia e relações entre países', c:['Relações Internacionais']}
+      { q:'O que desperta mais sua curiosidade?', o:[
+        {t:'Como funcionam governos e relações entre países.', c:['Relações Internacionais']},
+        {t:'Como as sociedades se organizam.', c:['Ciências Sociais']},
+        {t:'Como os lugares, territórios e ambientes funcionam.', c:['Geografia']},
+        {t:'Como empresas e organizações são administradas.', c:['Administração']}
       ]},
-      { q:'O que prende mais a sua atenção?', o:[
-        {t:'Ensinar e formar pessoas', c:['Pedagogia']},
-        {t:'Espaço, território e meio ambiente', c:['Geografia']},
-        {t:'Comportamento de grupos e sociedades', c:['Ciências Sociais']},
-        {t:'Gestão de empresas e de pessoas', c:['Administração']}
+      { q:'Qual habilidade mais combina com você?', o:[
+        {t:'Argumentação e capacidade de defender ideias.', c:['Direito']},
+        {t:'Escuta e empatia.', c:['Psicologia']},
+        {t:'Comunicação e facilidade para ensinar.', c:['Pedagogia']},
+        {t:'Organização e liderança.', c:['Administração']}
       ]},
-      { q:'Qual desses campos de conhecimento mais te fascina?', o:[
-        {t:'Justiça, leis e defesa de direitos', c:['Direito']},
-        {t:'Espaço, território e meio ambiente', c:['Geografia']},
-        {t:'Comportamento de grupos e sociedades', c:['Ciências Sociais']},
-        {t:'Diplomacia e relações entre países', c:['Relações Internacionais']}
-      ]},
-      { q:'Qual habilidade mais te representa?', o:[
-        {t:'Argumentar e defender pontos de vista', c:['Direito']},
-        {t:'Explicar ideias de forma clara e paciente', c:['Pedagogia']},
-        {t:'Investigar fontes e documentos', c:['História']},
-        {t:'Analisar mapas e dados territoriais', c:['Geografia']}
-      ]},
-      { q:'Em que tipo de tarefa você se sai melhor?', o:[
-        {t:'Ajudar comunidades em situação de vulnerabilidade', c:['Serviço Social']},
-        {t:'Pesquisar e interpretar fenômenos sociais', c:['Ciências Sociais']},
-        {t:'Negociar e mediar conflitos', c:['Relações Internacionais']},
-        {t:'Planejar e liderar equipes', c:['Administração']}
-      ]},
-      { q:'Qual desses talentos você reconhece em você mesmo?', o:[
-        {t:'Argumentar e defender pontos de vista', c:['Direito']},
-        {t:'Investigar fontes e documentos', c:['História']},
-        {t:'Ajudar comunidades em situação de vulnerabilidade', c:['Serviço Social']},
-        {t:'Negociar e mediar conflitos', c:['Relações Internacionais']}
-      ]},
-      { q:'Se te pedissem para resolver um problema, qual abordagem você usaria?', o:[
-        {t:'Explicar ideias de forma clara e paciente', c:['Pedagogia']},
-        {t:'Analisar mapas e dados territoriais', c:['Geografia']},
-        {t:'Pesquisar e interpretar fenômenos sociais', c:['Ciências Sociais']},
-        {t:'Planejar e liderar equipes', c:['Administração']}
-      ]},
-      { q:'O que as pessoas mais elogiam em você?', o:[
-        {t:'Argumentar e defender pontos de vista', c:['Direito']},
-        {t:'Analisar mapas e dados territoriais', c:['Geografia']},
-        {t:'Pesquisar e interpretar fenômenos sociais', c:['Ciências Sociais']},
-        {t:'Negociar e mediar conflitos', c:['Relações Internacionais']}
-      ]},
-      { q:'Onde você se imagina trabalhando no futuro?', o:[
-        {t:'Escritório de advocacia ou tribunal', c:['Direito']},
-        {t:'Escola ou espaço de educação infantil', c:['Pedagogia']},
-        {t:'Museu, arquivo histórico ou centro de pesquisa', c:['História']},
-        {t:'Trabalho de campo e estudos urbanos', c:['Geografia']}
+      { q:'Você prefere trabalhar…', o:[
+        {t:'Analisando leis e resolvendo questões jurídicas.', c:['Direito']},
+        {t:'Acompanhando pessoas em seus processos pessoais.', c:['Psicologia']},
+        {t:'Atuando na educação e no desenvolvimento de alunos.', c:['Pedagogia']},
+        {t:'Planejando estratégias e administrando projetos.', c:['Administração']}
       ]},
       { q:'Qual ambiente de trabalho mais combina com você?', o:[
-        {t:'ONG ou órgão público de assistência social', c:['Serviço Social']},
-        {t:'Universidade, institutos de pesquisa', c:['Ciências Sociais']},
-        {t:'Embaixadas, organismos internacionais', c:['Relações Internacionais']},
-        {t:'Empresas de diversos portes e setores', c:['Administração']}
+        {t:'Tribunais, escritórios de advocacia ou órgãos públicos.', c:['Direito']},
+        {t:'Consultórios, clínicas ou instituições de apoio.', c:['Psicologia']},
+        {t:'Escolas, universidades ou projetos educacionais.', c:['Pedagogia']},
+        {t:'Empresas e organizações.', c:['Administração']}
       ]},
-      { q:'Em qual desses cenários você se sentiria mais à vontade?', o:[
-        {t:'Escritório de advocacia ou tribunal', c:['Direito']},
-        {t:'Museu, arquivo histórico ou centro de pesquisa', c:['História']},
-        {t:'ONG ou órgão público de assistência social', c:['Serviço Social']},
-        {t:'Embaixadas, organismos internacionais', c:['Relações Internacionais']}
+      { q:'O que mais te deixaria satisfeito(a)?', o:[
+        {t:'Garantir direitos e ajudar pessoas através da justiça.', c:['Direito']},
+        {t:'Ajudar alguém a superar dificuldades emocionais.', c:['Psicologia']},
+        {t:'Transformar vidas por meio da educação.', c:['Pedagogia']},
+        {t:'Fazer uma organização crescer e alcançar resultados.', c:['Administração']}
       ]},
-      { q:'Se pudesse escolher seu local de trabalho ideal, qual seria?', o:[
-        {t:'Escola ou espaço de educação infantil', c:['Pedagogia']},
-        {t:'Trabalho de campo e estudos urbanos', c:['Geografia']},
-        {t:'Universidade, institutos de pesquisa', c:['Ciências Sociais']},
-        {t:'Empresas de diversos portes e setores', c:['Administração']}
+      { q:'Você prefere…', o:[
+        {t:'Debater e defender opiniões.', c:['Direito']},
+        {t:'Ouvir e compreender histórias pessoais.', c:['Psicologia']},
+        {t:'Ensinar e orientar pessoas.', c:['Pedagogia']},
+        {t:'Planejar e coordenar atividades.', c:['Administração']}
       ]},
-      { q:'Qual rotina profissional mais combina com seu estilo?', o:[
-        {t:'Escritório de advocacia ou tribunal', c:['Direito']},
-        {t:'Trabalho de campo e estudos urbanos', c:['Geografia']},
-        {t:'Universidade, institutos de pesquisa', c:['Ciências Sociais']},
-        {t:'Embaixadas, organismos internacionais', c:['Relações Internacionais']}
+      { q:'Se pudesse escolher um projeto…', o:[
+        {t:'Criar uma iniciativa para defender direitos sociais.', c:['Direito']},
+        {t:'Desenvolver um projeto de apoio à saúde mental.', c:['Psicologia']},
+        {t:'Criar um programa de melhoria da educação.', c:['Pedagogia']},
+        {t:'Liderar um projeto em uma empresa ou instituição.', c:['Administração']}
       ]},
-      { q:'O que mais te motivaria em uma carreira?', o:[
-        {t:'Lutar por justiça e pelos direitos das pessoas', c:['Direito']},
-        {t:'Formar a próxima geração', c:['Pedagogia']},
-        {t:'Preservar e contar a memória da humanidade', c:['História']},
-        {t:'Entender e cuidar do espaço em que vivemos', c:['Geografia']}
+      { q:'O que você faria com mais prazer?', o:[
+        {t:'Analisar documentos e argumentos.', c:['Direito']},
+        {t:'Realizar atendimentos e conversas individuais.', c:['Psicologia']},
+        {t:'Criar atividades educativas.', c:['Pedagogia']},
+        {t:'Organizar equipes e projetos.', c:['Administração']}
       ]},
-      { q:'Qual causa você gostaria de defender profissionalmente?', o:[
-        {t:'Lutar por igualdade e justiça social', c:['Serviço Social']},
-        {t:'Entender por que o mundo é como é', c:['Ciências Sociais']},
-        {t:'Conectar o Brasil ao resto do mundo', c:['Relações Internacionais']},
-        {t:'Tornar organizações mais eficientes', c:['Administração']}
+      { q:'Qual situação combina mais com você?', o:[
+        {t:'Participar de uma discussão sobre leis.', c:['Direito']},
+        {t:'Ajudar alguém a entender seus sentimentos.', c:['Psicologia']},
+        {t:'Explicar um conteúdo de forma simples.', c:['Pedagogia']},
+        {t:'Criar estratégias para melhorar resultados.', c:['Administração']}
       ]},
-      { q:'O que te faria sentir realizado no trabalho?', o:[
-        {t:'Lutar por justiça e pelos direitos das pessoas', c:['Direito']},
-        {t:'Preservar e contar a memória da humanidade', c:['História']},
-        {t:'Lutar por igualdade e justiça social', c:['Serviço Social']},
-        {t:'Conectar o Brasil ao resto do mundo', c:['Relações Internacionais']}
+      { q:'Você se identifica mais com…', o:[
+        {t:'Trabalhar com questões sociais e políticas.', c:['Ciências Sociais']},
+        {t:'Estudar culturas e acontecimentos históricos.', c:['História']},
+        {t:'Analisar espaços, territórios e meio ambiente.', c:['Geografia']},
+        {t:'Entender relações entre países.', c:['Relações Internacionais']}
       ]},
-      { q:'Se pudesse causar um impacto no mundo, qual seria?', o:[
-        {t:'Formar a próxima geração', c:['Pedagogia']},
-        {t:'Entender e cuidar do espaço em que vivemos', c:['Geografia']},
-        {t:'Entender por que o mundo é como é', c:['Ciências Sociais']},
-        {t:'Tornar organizações mais eficientes', c:['Administração']}
+      { q:'Qual conteúdo mais desperta sua curiosidade?', o:[
+        {t:'Política, cultura e comportamento da sociedade.', c:['Ciências Sociais']},
+        {t:'Guerras, povos e acontecimentos históricos.', c:['História']},
+        {t:'Mapas, cidades e questões ambientais.', c:['Geografia']},
+        {t:'Economia mundial e diplomacia.', c:['Relações Internacionais']}
       ]},
-      { q:'O que te move a querer seguir essa área?', o:[
-        {t:'Lutar por justiça e pelos direitos das pessoas', c:['Direito']},
-        {t:'Entender e cuidar do espaço em que vivemos', c:['Geografia']},
-        {t:'Entender por que o mundo é como é', c:['Ciências Sociais']},
-        {t:'Conectar o Brasil ao resto do mundo', c:['Relações Internacionais']}
+      { q:'Qual atividade faria você perder a noção do tempo?', o:[
+        {t:'Pesquisar como a sociedade funciona.', c:['Ciências Sociais']},
+        {t:'Investigar fatos históricos.', c:['História']},
+        {t:'Analisar mapas e fenômenos geográficos.', c:['Geografia']},
+        {t:'Estudar relações entre países.', c:['Relações Internacionais']}
       ]},
-      { q:'No seu dia a dia ideal de trabalho, você estaria...?', o:[
-        {t:'Analisando processos e construindo argumentos jurídicos', c:['Direito']},
-        {t:'Planejando aulas e acompanhando o aprendizado de crianças', c:['Pedagogia']},
-        {t:'Pesquisando e interpretando fatos históricos', c:['História']},
-        {t:'Mapeando e estudando transformações no território', c:['Geografia']}
+      { q:'Se pudesse acompanhar um profissional durante uma semana, escolheria alguém que…', o:[
+        {t:'Atua em uma organização social pesquisando a sociedade.', c:['Ciências Sociais']},
+        {t:'Trabalha em um museu ou centro histórico.', c:['História']},
+        {t:'Atua com planejamento urbano ou meio ambiente.', c:['Geografia']},
+        {t:'Trabalha em uma organização internacional ou diplomática.', c:['Relações Internacionais']}
       ]},
-      { q:'Qual dessas atividades você faria de bom grado?', o:[
-        {t:'Atendendo famílias e articulando políticas sociais', c:['Serviço Social']},
-        {t:'Realizando pesquisas sobre cultura e sociedade', c:['Ciências Sociais']},
-        {t:'Acompanhando negociações e política externa', c:['Relações Internacionais']},
-        {t:'Organizando processos e tomando decisões estratégicas', c:['Administração']}
+      { q:'O que mais te inspira?', o:[
+        {t:'A busca por justiça e igualdade.', c:['Direito']},
+        {t:'O comportamento humano.', c:['Psicologia']},
+        {t:'O poder da educação na transformação social.', c:['Pedagogia']},
+        {t:'Liderança e inovação.', c:['Administração']}
       ]},
-      { q:'Se surgisse um desafio no trabalho, qual você prefere enfrentar?', o:[
-        {t:'Analisando processos e construindo argumentos jurídicos', c:['Direito']},
-        {t:'Pesquisando e interpretando fatos históricos', c:['História']},
-        {t:'Atendendo famílias e articulando políticas sociais', c:['Serviço Social']},
-        {t:'Acompanhando negociações e política externa', c:['Relações Internacionais']}
+      { q:'Qual tipo de problema você gostaria de ajudar a resolver?', o:[
+        {t:'Problemas relacionados à justiça e direitos.', c:['Direito']},
+        {t:'Questões emocionais e comportamentais.', c:['Psicologia']},
+        {t:'Dificuldades de aprendizagem e educação.', c:['Pedagogia']},
+        {t:'Problemas de gestão e organização.', c:['Administração']}
       ]},
-      { q:'Qual tarefa prática mais te agrada?', o:[
-        {t:'Planejando aulas e acompanhando o aprendizado de crianças', c:['Pedagogia']},
-        {t:'Mapeando e estudando transformações no território', c:['Geografia']},
-        {t:'Realizando pesquisas sobre cultura e sociedade', c:['Ciências Sociais']},
-        {t:'Organizando processos e tomando decisões estratégicas', c:['Administração']}
+      { q:'Como você gostaria de impactar a sociedade?', o:[
+        {t:'Defendendo pessoas e garantindo direitos.', c:['Direito']},
+        {t:'Ajudando no desenvolvimento pessoal.', c:['Psicologia']},
+        {t:'Melhorando o acesso ao conhecimento.', c:['Pedagogia']},
+        {t:'Criando soluções para organizações.', c:['Administração']}
       ]},
-      { q:'Imagine um dia comum de trabalho: o que você estaria fazendo?', o:[
-        {t:'Analisando processos e construindo argumentos jurídicos', c:['Direito']},
-        {t:'Mapeando e estudando transformações no território', c:['Geografia']},
-        {t:'Realizando pesquisas sobre cultura e sociedade', c:['Ciências Sociais']},
-        {t:'Acompanhando negociações e política externa', c:['Relações Internacionais']}
+      { q:'Qual tema você gostaria de estudar profundamente?', o:[
+        {t:'Leis e funcionamento da justiça.', c:['Direito']},
+        {t:'Mente, emoções e comportamento.', c:['Psicologia']},
+        {t:'Educação e processos de aprendizagem.', c:['Pedagogia']},
+        {t:'Empresas, liderança e estratégias.', c:['Administração']}
+      ]},
+      { q:'Se pudesse iniciar algo do zero, seria:', o:[
+        {t:'Uma iniciativa de defesa dos direitos humanos.', c:['Direito']},
+        {t:'Um programa de apoio psicológico.', c:['Psicologia']},
+        {t:'Um projeto educacional para jovens.', c:['Pedagogia']},
+        {t:'Uma organização ou empreendimento social.', c:['Administração']}
+      ]},
+      { q:'Se pudesse escrever sobre um assunto, qual escolheria?', o:[
+        {t:'Como a sociedade se transforma ao longo do tempo.', c:['Ciências Sociais']},
+        {t:'Um grande acontecimento histórico.', c:['História']},
+        {t:'As transformações do espaço geográfico.', c:['Geografia']},
+        {t:'As relações entre nações e blocos econômicos.', c:['Relações Internacionais']}
+      ]},
+      { q:'Qual tipo de documentário você assistiria com mais interesse?', o:[
+        {t:'Um documentário sobre movimentos sociais.', c:['Ciências Sociais']},
+        {t:'Um documentário sobre civilizações antigas.', c:['História']},
+        {t:'Um documentário sobre mudanças no território e nas cidades.', c:['Geografia']},
+        {t:'Um documentário sobre política internacional.', c:['Relações Internacionais']}
+      ]},
+      { q:'Se pudesse dar uma palestra, sobre o que ela seria?', o:[
+        {t:'O comportamento das pessoas em sociedade.', c:['Ciências Sociais']},
+        {t:'Como o passado explica o presente.', c:['História']},
+        {t:'Como o espaço em que vivemos molda nossas vidas.', c:['Geografia']},
+        {t:'Como o mundo se conecta através da diplomacia.', c:['Relações Internacionais']}
+      ]},
+      { q:'O que mais te chamaria atenção em uma viagem de estudos?', o:[
+        {t:'Conhecer diferentes culturas e comunidades.', c:['Ciências Sociais']},
+        {t:'Visitar sítios e monumentos históricos.', c:['História']},
+        {t:'Observar a geografia e o urbanismo de um lugar novo.', c:['Geografia']},
+        {t:'Participar de um encontro internacional ou diplomático.', c:['Relações Internacionais']}
+      ]},
+      { q:'Qual pergunta você mais gostaria de responder?', o:[
+        {t:'Por que a sociedade se organiza da forma como se organiza?', c:['Ciências Sociais']},
+        {t:'Por que os fatos do passado se repetem?', c:['História']},
+        {t:'Por que certos lugares se desenvolvem mais que outros?', c:['Geografia']},
+        {t:'Por que alguns países têm mais influência que outros?', c:['Relações Internacionais']}
       ]}
     ]
   },
   { id:'natureza', name:'Ciências da natureza', tone:'--natureza', toneInk:'--natureza-ink',
     courses:['Ciências Biológicas','Química','Física','Geologia','Oceanografia','Meteorologia'],
     questions:[
-      { q:'O que mais desperta seu interesse?', o:[
-        {t:'Seres vivos e ecossistemas', c:['Ciências Biológicas']},
-        {t:'Reações e substâncias químicas', c:['Química']},
-        {t:'As leis do universo e da matéria', c:['Física']},
-        {t:'Rochas, minerais e a formação da Terra', c:['Geologia']}
+      { q:'O que mais te motiva em uma profissão?', o:[
+        {t:'Compreender os seres vivos e contribuir para sua preservação.', c:['Ciências Biológicas']},
+        {t:'Descobrir como as substâncias transformam o mundo ao nosso redor.', c:['Química']},
+        {t:'Entender as leis que explicam o funcionamento do universo.', c:['Física']},
+        {t:'Investigar os fenômenos naturais que moldam a Terra.', c:['Geologia']}
       ]},
-      { q:'Qual desses temas mais te atrai?', o:[
-        {t:'As leis do universo e da matéria', c:['Física']},
-        {t:'Rochas, minerais e a formação da Terra', c:['Geologia']},
-        {t:'A vida marinha e os oceanos', c:['Oceanografia']},
-        {t:'A previsão do tempo e o clima', c:['Meteorologia']}
+      { q:'Qual atividade parece mais interessante?', o:[
+        {t:'Estudar animais, plantas e ecossistemas.', c:['Ciências Biológicas']},
+        {t:'Realizar experimentos em laboratório.', c:['Química']},
+        {t:'Analisar rochas, fósseis e minerais.', c:['Geologia']},
+        {t:'Observar os oceanos e a vida marinha.', c:['Oceanografia']}
       ]},
-      { q:'Se você pudesse escolher um assunto para estudar a fundo, qual seria?', o:[
-        {t:'Seres vivos e ecossistemas', c:['Ciências Biológicas']},
-        {t:'Reações e substâncias químicas', c:['Química']},
-        {t:'A vida marinha e os oceanos', c:['Oceanografia']},
-        {t:'A previsão do tempo e o clima', c:['Meteorologia']}
+      { q:'O que desperta mais sua curiosidade?', o:[
+        {t:'O funcionamento do clima e da atmosfera.', c:['Meteorologia']},
+        {t:'Como os organismos vivem e evoluem.', c:['Ciências Biológicas']},
+        {t:'Como surgem as montanhas, terremotos e vulcões.', c:['Geologia']},
+        {t:'Como as leis da Física explicam o universo.', c:['Física']}
       ]},
-      { q:'O que prende mais a sua atenção?', o:[
-        {t:'Reações e substâncias químicas', c:['Química']},
-        {t:'As leis do universo e da matéria', c:['Física']},
-        {t:'A vida marinha e os oceanos', c:['Oceanografia']},
-        {t:'A previsão do tempo e o clima', c:['Meteorologia']}
+      { q:'Qual habilidade mais combina com você?', o:[
+        {t:'Observar e investigar a natureza.', c:['Ciências Biológicas']},
+        {t:'Resolver problemas usando cálculos e raciocínio lógico.', c:['Física']},
+        {t:'Trabalhar com precisão em experimentos.', c:['Química']},
+        {t:'Analisar fenômenos naturais e ambientais.', c:['Meteorologia']}
       ]},
-      { q:'Qual desses campos de conhecimento mais te fascina?', o:[
-        {t:'Seres vivos e ecossistemas', c:['Ciências Biológicas']},
-        {t:'Rochas, minerais e a formação da Terra', c:['Geologia']},
-        {t:'A vida marinha e os oceanos', c:['Oceanografia']},
-        {t:'A previsão do tempo e o clima', c:['Meteorologia']}
-      ]},
-      { q:'Qual habilidade mais te representa?', o:[
-        {t:'Observar e classificar a natureza', c:['Ciências Biológicas']},
-        {t:'Fazer experimentos com precisão técnica', c:['Química']},
-        {t:'Resolver problemas com cálculos precisos', c:['Física']},
-        {t:'Investigar o passado geológico da Terra', c:['Geologia']}
-      ]},
-      { q:'Em que tipo de tarefa você se sai melhor?', o:[
-        {t:'Resolver problemas com cálculos precisos', c:['Física']},
-        {t:'Investigar o passado geológico da Terra', c:['Geologia']},
-        {t:'Estudar ecossistemas marinhos', c:['Oceanografia']},
-        {t:'Interpretar dados atmosféricos', c:['Meteorologia']}
-      ]},
-      { q:'Qual desses talentos você reconhece em você mesmo?', o:[
-        {t:'Observar e classificar a natureza', c:['Ciências Biológicas']},
-        {t:'Fazer experimentos com precisão técnica', c:['Química']},
-        {t:'Estudar ecossistemas marinhos', c:['Oceanografia']},
-        {t:'Interpretar dados atmosféricos', c:['Meteorologia']}
-      ]},
-      { q:'Se te pedissem para resolver um problema, qual abordagem você usaria?', o:[
-        {t:'Fazer experimentos com precisão técnica', c:['Química']},
-        {t:'Resolver problemas com cálculos precisos', c:['Física']},
-        {t:'Estudar ecossistemas marinhos', c:['Oceanografia']},
-        {t:'Interpretar dados atmosféricos', c:['Meteorologia']}
-      ]},
-      { q:'O que as pessoas mais elogiam em você?', o:[
-        {t:'Observar e classificar a natureza', c:['Ciências Biológicas']},
-        {t:'Investigar o passado geológico da Terra', c:['Geologia']},
-        {t:'Estudar ecossistemas marinhos', c:['Oceanografia']},
-        {t:'Interpretar dados atmosféricos', c:['Meteorologia']}
-      ]},
-      { q:'Onde você se imagina trabalhando no futuro?', o:[
-        {t:'Campo, trilhas, contato com a natureza', c:['Ciências Biológicas']},
-        {t:'Laboratório de pesquisa química', c:['Química']},
-        {t:'Laboratório ou centro de pesquisa', c:['Física']},
-        {t:'Campo, minas e estudos geológicos', c:['Geologia']}
+      { q:'Você prefere trabalhar…', o:[
+        {t:'Em reservas ambientais ou parques naturais.', c:['Ciências Biológicas']},
+        {t:'Em laboratórios ou indústrias químicas.', c:['Química']},
+        {t:'Em centros de pesquisa e universidades.', c:['Física']},
+        {t:'Em expedições de campo ou navios de pesquisa.', c:['Oceanografia']}
       ]},
       { q:'Qual ambiente de trabalho mais combina com você?', o:[
-        {t:'Laboratório ou centro de pesquisa', c:['Física']},
-        {t:'Campo, minas e estudos geológicos', c:['Geologia']},
-        {t:'Embarcações e estações costeiras', c:['Oceanografia']},
-        {t:'Centro de previsão meteorológica', c:['Meteorologia']}
+        {t:'Laboratórios de pesquisa.', c:['Química']},
+        {t:'Florestas, rios e áreas de preservação.', c:['Ciências Biológicas']},
+        {t:'Minas, cavernas ou áreas geológicas.', c:['Geologia']},
+        {t:'Centros de monitoramento do clima.', c:['Meteorologia']}
       ]},
-      { q:'Em qual desses cenários você se sentiria mais à vontade?', o:[
-        {t:'Campo, trilhas, contato com a natureza', c:['Ciências Biológicas']},
-        {t:'Laboratório de pesquisa química', c:['Química']},
-        {t:'Embarcações e estações costeiras', c:['Oceanografia']},
-        {t:'Centro de previsão meteorológica', c:['Meteorologia']}
+      { q:'O que mais te deixaria satisfeito(a)?', o:[
+        {t:'Descobrir uma nova espécie.', c:['Ciências Biológicas']},
+        {t:'Desenvolver um novo material ou substância.', c:['Química']},
+        {t:'Explicar um fenômeno físico importante.', c:['Física']},
+        {t:'Contribuir para prever eventos climáticos extremos.', c:['Meteorologia']}
       ]},
-      { q:'Se pudesse escolher seu local de trabalho ideal, qual seria?', o:[
-        {t:'Laboratório de pesquisa química', c:['Química']},
-        {t:'Laboratório ou centro de pesquisa', c:['Física']},
-        {t:'Embarcações e estações costeiras', c:['Oceanografia']},
-        {t:'Centro de previsão meteorológica', c:['Meteorologia']}
+      { q:'Você prefere…', o:[
+        {t:'Observar.', c:['Ciências Biológicas']},
+        {t:'Experimentar.', c:['Química']},
+        {t:'Calcular.', c:['Física']},
+        {t:'Explorar.', c:['Geologia']}
       ]},
-      { q:'Qual rotina profissional mais combina com seu estilo?', o:[
-        {t:'Campo, trilhas, contato com a natureza', c:['Ciências Biológicas']},
-        {t:'Campo, minas e estudos geológicos', c:['Geologia']},
-        {t:'Embarcações e estações costeiras', c:['Oceanografia']},
-        {t:'Centro de previsão meteorológica', c:['Meteorologia']}
+      { q:'Se pudesse escolher um projeto…', o:[
+        {t:'Preservar uma espécie ameaçada.', c:['Ciências Biológicas']},
+        {t:'Criar um material sustentável.', c:['Química']},
+        {t:'Estudar as mudanças climáticas nos oceanos.', c:['Oceanografia']},
+        {t:'Monitorar tempestades e furacões.', c:['Meteorologia']}
       ]},
-      { q:'O que mais te motivaria em uma carreira?', o:[
-        {t:'Preservar a biodiversidade do planeta', c:['Ciências Biológicas']},
-        {t:'Desenvolver novos materiais e produtos', c:['Química']},
-        {t:'Entender os fenômenos que regem o universo', c:['Física']},
-        {t:'Compreender os recursos naturais do planeta', c:['Geologia']}
+      { q:'O que você faria com mais prazer?', o:[
+        {t:'Estudar células e organismos vivos.', c:['Ciências Biológicas']},
+        {t:'Criar e testar novas substâncias.', c:['Química']},
+        {t:'Resolver desafios relacionados à energia e ao universo.', c:['Física']},
+        {t:'Investigar a formação da Terra.', c:['Geologia']}
       ]},
-      { q:'Qual causa você gostaria de defender profissionalmente?', o:[
-        {t:'Entender os fenômenos que regem o universo', c:['Física']},
-        {t:'Compreender os recursos naturais do planeta', c:['Geologia']},
-        {t:'Proteger e entender os oceanos', c:['Oceanografia']},
-        {t:'Ajudar a prever e entender mudanças climáticas', c:['Meteorologia']}
+      { q:'Qual situação combina mais com você?', o:[
+        {t:'Coletar amostras de plantas ou animais.', c:['Ciências Biológicas']},
+        {t:'Fazer experimentos em laboratório.', c:['Química']},
+        {t:'Trabalhar em observatórios ou institutos científicos.', c:['Física']},
+        {t:'Participar de expedições marítimas.', c:['Oceanografia']}
       ]},
-      { q:'O que te faria sentir realizado no trabalho?', o:[
-        {t:'Preservar a biodiversidade do planeta', c:['Ciências Biológicas']},
-        {t:'Desenvolver novos materiais e produtos', c:['Química']},
-        {t:'Proteger e entender os oceanos', c:['Oceanografia']},
-        {t:'Ajudar a prever e entender mudanças climáticas', c:['Meteorologia']}
+      { q:'O que mais te inspira?', o:[
+        {t:'A biodiversidade do planeta.', c:['Ciências Biológicas']},
+        {t:'As descobertas científicas.', c:['Química']},
+        {t:'O universo e suas leis.', c:['Física']},
+        {t:'Os fenômenos naturais da Terra.', c:['Geologia']}
       ]},
-      { q:'Se pudesse causar um impacto no mundo, qual seria?', o:[
-        {t:'Desenvolver novos materiais e produtos', c:['Química']},
-        {t:'Entender os fenômenos que regem o universo', c:['Física']},
-        {t:'Proteger e entender os oceanos', c:['Oceanografia']},
-        {t:'Ajudar a prever e entender mudanças climáticas', c:['Meteorologia']}
+      { q:'Você se identifica mais com…', o:[
+        {t:'Trabalhar com seres vivos.', c:['Ciências Biológicas']},
+        {t:'Trabalhar com substâncias e reações.', c:['Química']},
+        {t:'Trabalhar com modelos e teorias científicas.', c:['Física']},
+        {t:'Trabalhar em campo, explorando a natureza.', c:['Geologia']}
       ]},
-      { q:'O que te move a querer seguir essa área?', o:[
-        {t:'Preservar a biodiversidade do planeta', c:['Ciências Biológicas']},
-        {t:'Compreender os recursos naturais do planeta', c:['Geologia']},
-        {t:'Proteger e entender os oceanos', c:['Oceanografia']},
-        {t:'Ajudar a prever e entender mudanças climáticas', c:['Meteorologia']}
+      { q:'Qual conteúdo mais desperta sua curiosidade?', o:[
+        {t:'Ecologia e evolução.', c:['Ciências Biológicas']},
+        {t:'Reações químicas e moléculas.', c:['Química']},
+        {t:'Astronomia, energia e movimento.', c:['Física']},
+        {t:'Oceanos, correntes marítimas e vida marinha.', c:['Oceanografia']}
       ]},
-      { q:'No seu dia a dia ideal de trabalho, você estaria...?', o:[
-        {t:'Coletando e analisando espécies e ecossistemas', c:['Ciências Biológicas']},
-        {t:'Conduzindo experimentos e testando substâncias', c:['Química']},
-        {t:'Modelando fenômenos físicos e realizando medições', c:['Física']},
-        {t:'Analisando formações rochosas e minerais', c:['Geologia']}
-      ]},
-      { q:'Qual dessas atividades você faria de bom grado?', o:[
-        {t:'Modelando fenômenos físicos e realizando medições', c:['Física']},
-        {t:'Analisando formações rochosas e minerais', c:['Geologia']},
-        {t:'Coletando dados em expedições marítimas', c:['Oceanografia']},
-        {t:'Monitorando e prevendo condições climáticas', c:['Meteorologia']}
-      ]},
-      { q:'Se surgisse um desafio no trabalho, qual você prefere enfrentar?', o:[
-        {t:'Coletando e analisando espécies e ecossistemas', c:['Ciências Biológicas']},
-        {t:'Conduzindo experimentos e testando substâncias', c:['Química']},
-        {t:'Coletando dados em expedições marítimas', c:['Oceanografia']},
-        {t:'Monitorando e prevendo condições climáticas', c:['Meteorologia']}
-      ]},
-      { q:'Qual tarefa prática mais te agrada?', o:[
-        {t:'Conduzindo experimentos e testando substâncias', c:['Química']},
-        {t:'Modelando fenômenos físicos e realizando medições', c:['Física']},
-        {t:'Coletando dados em expedições marítimas', c:['Oceanografia']},
-        {t:'Monitorando e prevendo condições climáticas', c:['Meteorologia']}
-      ]},
-      { q:'Imagine um dia comum de trabalho: o que você estaria fazendo?', o:[
-        {t:'Coletando e analisando espécies e ecossistemas', c:['Ciências Biológicas']},
-        {t:'Analisando formações rochosas e minerais', c:['Geologia']},
-        {t:'Coletando dados em expedições marítimas', c:['Oceanografia']},
-        {t:'Monitorando e prevendo condições climáticas', c:['Meteorologia']}
+      { q:'Qual atividade faria você perder a noção do tempo?', o:[
+        {t:'Observar animais e plantas.', c:['Ciências Biológicas']},
+        {t:'Fazer experimentos científicos.', c:['Química']},
+        {t:'Resolver desafios de Física.', c:['Física']},
+        {t:'Analisar mapas climáticos ou explorar ambientes naturais.', c:['Meteorologia']}
       ]}
     ]
   },
   { id:'linguagens', name:'Linguagens', tone:'--linguagens', toneInk:'--linguagens-ink',
-    courses:['Jornalismo','Publicidade e Propaganda','Letras','Design','Artes Visuais','Cinema e Audiovisual'],
+    courses:['Letras','Jornalismo','Publicidade','Design','Artes Visuais','Cinema'],
     questions:[
-      { q:'O que mais desperta seu interesse?', o:[
-        {t:'Investigar e contar histórias reais', c:['Jornalismo']},
-        {t:'Criar campanhas criativas para marcas', c:['Publicidade e Propaganda']},
-        {t:'Linguagem, literatura e ensino de idiomas', c:['Letras']},
-        {t:'Criar soluções visuais e produtos', c:['Design']}
+      { q:'O que mais te motiva em uma profissão?', o:[
+        {t:'Compartilhar conhecimento por meio da leitura e da escrita.', c:['Letras']},
+        {t:'Informar a sociedade sobre acontecimentos importantes.', c:['Jornalismo']},
+        {t:'Criar campanhas que despertem o interesse das pessoas.', c:['Publicidade']},
+        {t:'Desenvolver soluções criativas por meio da imagem.', c:['Design']}
       ]},
-      { q:'Qual desses temas mais te atrai?', o:[
-        {t:'Linguagem, literatura e ensino de idiomas', c:['Letras']},
-        {t:'Criar soluções visuais e produtos', c:['Design']},
-        {t:'Pintura, escultura e expressão artística', c:['Artes Visuais']},
-        {t:'Roteiro e produção audiovisual', c:['Cinema e Audiovisual']}
+      { q:'Qual atividade parece mais interessante?', o:[
+        {t:'Criar a identidade visual de uma marca.', c:['Design']},
+        {t:'Produzir uma reportagem investigativa.', c:['Jornalismo']},
+        {t:'Produzir pinturas, ilustrações ou esculturas.', c:['Artes Visuais']},
+        {t:'Ensinar literatura ou idiomas.', c:['Letras']}
       ]},
-      { q:'Se você pudesse escolher um assunto para estudar a fundo, qual seria?', o:[
-        {t:'Investigar e contar histórias reais', c:['Jornalismo']},
-        {t:'Criar campanhas criativas para marcas', c:['Publicidade e Propaganda']},
-        {t:'Pintura, escultura e expressão artística', c:['Artes Visuais']},
-        {t:'Roteiro e produção audiovisual', c:['Cinema e Audiovisual']}
+      { q:'O que desperta mais sua curiosidade?', o:[
+        {t:'Como uma marca conquista o público.', c:['Publicidade']},
+        {t:'Como um filme é planejado e produzido.', c:['Cinema']},
+        {t:'Como a linguagem influencia diferentes culturas.', c:['Letras']},
+        {t:'Como transformar ideias em imagens e projetos visuais.', c:['Design']}
       ]},
-      { q:'O que prende mais a sua atenção?', o:[
-        {t:'Criar campanhas criativas para marcas', c:['Publicidade e Propaganda']},
-        {t:'Linguagem, literatura e ensino de idiomas', c:['Letras']},
-        {t:'Pintura, escultura e expressão artística', c:['Artes Visuais']},
-        {t:'Roteiro e produção audiovisual', c:['Cinema e Audiovisual']}
+      { q:'Qual habilidade mais combina com você?', o:[
+        {t:'Comunicar informações com clareza.', c:['Jornalismo']},
+        {t:'Criar projetos visuais criativos.', c:['Design']},
+        {t:'Contar histórias por meio de imagens e vídeos.', c:['Cinema']},
+        {t:'Interpretar e produzir textos.', c:['Letras']}
       ]},
-      { q:'Qual desses campos de conhecimento mais te fascina?', o:[
-        {t:'Investigar e contar histórias reais', c:['Jornalismo']},
-        {t:'Criar soluções visuais e produtos', c:['Design']},
-        {t:'Pintura, escultura e expressão artística', c:['Artes Visuais']},
-        {t:'Roteiro e produção audiovisual', c:['Cinema e Audiovisual']}
-      ]},
-      { q:'Qual habilidade mais te representa?', o:[
-        {t:'Escrever e apurar fatos com rigor', c:['Jornalismo']},
-        {t:'Convencer e criar conceitos originais', c:['Publicidade e Propaganda']},
-        {t:'Escrever e analisar textos com profundidade', c:['Letras']},
-        {t:'Ter um olhar estético apurado', c:['Design']}
-      ]},
-      { q:'Em que tipo de tarefa você se sai melhor?', o:[
-        {t:'Escrever e analisar textos com profundidade', c:['Letras']},
-        {t:'Ter um olhar estético apurado', c:['Design']},
-        {t:'Criar e expressar ideias visualmente', c:['Artes Visuais']},
-        {t:'Contar histórias através de imagens em movimento', c:['Cinema e Audiovisual']}
-      ]},
-      { q:'Qual desses talentos você reconhece em você mesmo?', o:[
-        {t:'Escrever e apurar fatos com rigor', c:['Jornalismo']},
-        {t:'Convencer e criar conceitos originais', c:['Publicidade e Propaganda']},
-        {t:'Criar e expressar ideias visualmente', c:['Artes Visuais']},
-        {t:'Contar histórias através de imagens em movimento', c:['Cinema e Audiovisual']}
-      ]},
-      { q:'Se te pedissem para resolver um problema, qual abordagem você usaria?', o:[
-        {t:'Convencer e criar conceitos originais', c:['Publicidade e Propaganda']},
-        {t:'Escrever e analisar textos com profundidade', c:['Letras']},
-        {t:'Criar e expressar ideias visualmente', c:['Artes Visuais']},
-        {t:'Contar histórias através de imagens em movimento', c:['Cinema e Audiovisual']}
-      ]},
-      { q:'O que as pessoas mais elogiam em você?', o:[
-        {t:'Escrever e apurar fatos com rigor', c:['Jornalismo']},
-        {t:'Ter um olhar estético apurado', c:['Design']},
-        {t:'Criar e expressar ideias visualmente', c:['Artes Visuais']},
-        {t:'Contar histórias através de imagens em movimento', c:['Cinema e Audiovisual']}
-      ]},
-      { q:'Onde você se imagina trabalhando no futuro?', o:[
-        {t:'Redação de jornal ou portal de notícias', c:['Jornalismo']},
-        {t:'Agência de publicidade', c:['Publicidade e Propaganda']},
-        {t:'Escola, editora ou espaço de ensino de idiomas', c:['Letras']},
-        {t:'Estúdio de design', c:['Design']}
+      { q:'Você prefere trabalhar…', o:[
+        {t:'Em uma agência de publicidade.', c:['Publicidade']},
+        {t:'Em uma produtora de filmes.', c:['Cinema']},
+        {t:'Em um ateliê ou galeria de arte.', c:['Artes Visuais']},
+        {t:'Em uma editora ou instituição de ensino.', c:['Letras']}
       ]},
       { q:'Qual ambiente de trabalho mais combina com você?', o:[
-        {t:'Escola, editora ou espaço de ensino de idiomas', c:['Letras']},
-        {t:'Estúdio de design', c:['Design']},
-        {t:'Ateliê ou espaço de produção artística', c:['Artes Visuais']},
-        {t:'Set de filmagem ou estúdio de produção', c:['Cinema e Audiovisual']}
+        {t:'Redação de jornal, revista ou portal de notícias.', c:['Jornalismo']},
+        {t:'Estúdio de design.', c:['Design']},
+        {t:'Museu, galeria ou espaço cultural.', c:['Artes Visuais']},
+        {t:'Produtora de cinema ou televisão.', c:['Cinema']}
       ]},
-      { q:'Em qual desses cenários você se sentiria mais à vontade?', o:[
-        {t:'Redação de jornal ou portal de notícias', c:['Jornalismo']},
-        {t:'Agência de publicidade', c:['Publicidade e Propaganda']},
-        {t:'Ateliê ou espaço de produção artística', c:['Artes Visuais']},
-        {t:'Set de filmagem ou estúdio de produção', c:['Cinema e Audiovisual']}
+      { q:'O que mais te deixaria satisfeito(a)?', o:[
+        {t:'Ver uma campanha criada por você fazer sucesso.', c:['Publicidade']},
+        {t:'Publicar um livro ou material didático.', c:['Letras']},
+        {t:'Produzir um filme reconhecido pelo público.', c:['Cinema']},
+        {t:'Criar uma obra artística para uma exposição.', c:['Artes Visuais']}
       ]},
-      { q:'Se pudesse escolher seu local de trabalho ideal, qual seria?', o:[
-        {t:'Agência de publicidade', c:['Publicidade e Propaganda']},
-        {t:'Escola, editora ou espaço de ensino de idiomas', c:['Letras']},
-        {t:'Ateliê ou espaço de produção artística', c:['Artes Visuais']},
-        {t:'Set de filmagem ou estúdio de produção', c:['Cinema e Audiovisual']}
+      { q:'Você prefere…', o:[
+        {t:'Convencer pessoas por meio da comunicação.', c:['Publicidade']},
+        {t:'Investigar e descobrir informações.', c:['Jornalismo']},
+        {t:'Criar e desenhar.', c:['Design']},
+        {t:'Escrever histórias e textos.', c:['Letras']}
       ]},
-      { q:'Qual rotina profissional mais combina com seu estilo?', o:[
-        {t:'Redação de jornal ou portal de notícias', c:['Jornalismo']},
-        {t:'Estúdio de design', c:['Design']},
-        {t:'Ateliê ou espaço de produção artística', c:['Artes Visuais']},
-        {t:'Set de filmagem ou estúdio de produção', c:['Cinema e Audiovisual']}
+      { q:'Se pudesse escolher um projeto…', o:[
+        {t:'Desenvolver a identidade visual de uma empresa.', c:['Design']},
+        {t:'Produzir um documentário.', c:['Cinema']},
+        {t:'Criar uma campanha para uma causa social.', c:['Publicidade']},
+        {t:'Escrever um romance ou livro.', c:['Letras']}
       ]},
-      { q:'O que mais te motivaria em uma carreira?', o:[
-        {t:'Informar e dar voz a quem precisa ser ouvido', c:['Jornalismo']},
-        {t:'Conectar marcas e pessoas através de ideias', c:['Publicidade e Propaganda']},
-        {t:'Difundir a leitura e a literatura', c:['Letras']},
-        {t:'Tornar experiências mais funcionais e bonitas', c:['Design']}
+      { q:'O que você faria com mais prazer?', o:[
+        {t:'Criar uma marca do zero.', c:['Design']},
+        {t:'Cobrir um grande evento jornalístico.', c:['Jornalismo']},
+        {t:'Produzir obras artísticas.', c:['Artes Visuais']},
+        {t:'Escrever roteiros para filmes ou séries.', c:['Cinema']}
       ]},
-      { q:'Qual causa você gostaria de defender profissionalmente?', o:[
-        {t:'Difundir a leitura e a literatura', c:['Letras']},
-        {t:'Tornar experiências mais funcionais e bonitas', c:['Design']},
-        {t:'Expressar sentimentos e ideias através da arte', c:['Artes Visuais']},
-        {t:'Emocionar e contar histórias através do vídeo', c:['Cinema e Audiovisual']}
+      { q:'Qual situação combina mais com você?', o:[
+        {t:'Explicar um conteúdo de forma clara.', c:['Letras']},
+        {t:'Descobrir uma informação exclusiva.', c:['Jornalismo']},
+        {t:'Pensar em uma campanha criativa.', c:['Publicidade']},
+        {t:'Dirigir uma produção audiovisual.', c:['Cinema']}
       ]},
-      { q:'O que te faria sentir realizado no trabalho?', o:[
-        {t:'Informar e dar voz a quem precisa ser ouvido', c:['Jornalismo']},
-        {t:'Conectar marcas e pessoas através de ideias', c:['Publicidade e Propaganda']},
-        {t:'Expressar sentimentos e ideias através da arte', c:['Artes Visuais']},
-        {t:'Emocionar e contar histórias através do vídeo', c:['Cinema e Audiovisual']}
+      { q:'O que mais te inspira?', o:[
+        {t:'Livros e literatura.', c:['Letras']},
+        {t:'A busca pela verdade e pela informação.', c:['Jornalismo']},
+        {t:'Ideias inovadoras e campanhas criativas.', c:['Publicidade']},
+        {t:'Arte, cultura e expressão visual.', c:['Artes Visuais']}
       ]},
-      { q:'Se pudesse causar um impacto no mundo, qual seria?', o:[
-        {t:'Conectar marcas e pessoas através de ideias', c:['Publicidade e Propaganda']},
-        {t:'Difundir a leitura e a literatura', c:['Letras']},
-        {t:'Expressar sentimentos e ideias através da arte', c:['Artes Visuais']},
-        {t:'Emocionar e contar histórias através do vídeo', c:['Cinema e Audiovisual']}
+      { q:'Você se identifica mais com…', o:[
+        {t:'Trabalhar com textos e leitura.', c:['Letras']},
+        {t:'Conversar com pessoas e contar histórias reais.', c:['Jornalismo']},
+        {t:'Planejar estratégias de comunicação.', c:['Publicidade']},
+        {t:'Criar projetos visuais para diferentes públicos.', c:['Design']}
       ]},
-      { q:'O que te move a querer seguir essa área?', o:[
-        {t:'Informar e dar voz a quem precisa ser ouvido', c:['Jornalismo']},
-        {t:'Tornar experiências mais funcionais e bonitas', c:['Design']},
-        {t:'Expressar sentimentos e ideias através da arte', c:['Artes Visuais']},
-        {t:'Emocionar e contar histórias através do vídeo', c:['Cinema e Audiovisual']}
+      { q:'Qual conteúdo mais desperta sua curiosidade?', o:[
+        {t:'Literatura e idiomas.', c:['Letras']},
+        {t:'Atualidades e comunicação.', c:['Jornalismo']},
+        {t:'Marketing e comportamento do consumidor.', c:['Publicidade']},
+        {t:'Fotografia, ilustração e artes visuais.', c:['Artes Visuais']}
       ]},
-      { q:'No seu dia a dia ideal de trabalho, você estaria...?', o:[
-        {t:'Apurando fatos e produzindo reportagens', c:['Jornalismo']},
-        {t:'Desenvolvendo campanhas e conceitos criativos', c:['Publicidade e Propaganda']},
-        {t:'Estudando e ensinando língua e literatura', c:['Letras']},
-        {t:'Criando identidade visual e interfaces', c:['Design']}
-      ]},
-      { q:'Qual dessas atividades você faria de bom grado?', o:[
-        {t:'Estudando e ensinando língua e literatura', c:['Letras']},
-        {t:'Criando identidade visual e interfaces', c:['Design']},
-        {t:'Produzindo obras e expressões visuais', c:['Artes Visuais']},
-        {t:'Dirigindo, filmando ou editando produções audiovisuais', c:['Cinema e Audiovisual']}
-      ]},
-      { q:'Se surgisse um desafio no trabalho, qual você prefere enfrentar?', o:[
-        {t:'Apurando fatos e produzindo reportagens', c:['Jornalismo']},
-        {t:'Desenvolvendo campanhas e conceitos criativos', c:['Publicidade e Propaganda']},
-        {t:'Produzindo obras e expressões visuais', c:['Artes Visuais']},
-        {t:'Dirigindo, filmando ou editando produções audiovisuais', c:['Cinema e Audiovisual']}
-      ]},
-      { q:'Qual tarefa prática mais te agrada?', o:[
-        {t:'Desenvolvendo campanhas e conceitos criativos', c:['Publicidade e Propaganda']},
-        {t:'Estudando e ensinando língua e literatura', c:['Letras']},
-        {t:'Produzindo obras e expressões visuais', c:['Artes Visuais']},
-        {t:'Dirigindo, filmando ou editando produções audiovisuais', c:['Cinema e Audiovisual']}
-      ]},
-      { q:'Imagine um dia comum de trabalho: o que você estaria fazendo?', o:[
-        {t:'Apurando fatos e produzindo reportagens', c:['Jornalismo']},
-        {t:'Criando identidade visual e interfaces', c:['Design']},
-        {t:'Produzindo obras e expressões visuais', c:['Artes Visuais']},
-        {t:'Dirigindo, filmando ou editando produções audiovisuais', c:['Cinema e Audiovisual']}
+      { q:'Qual atividade faria você perder a noção do tempo?', o:[
+        {t:'Escrever ou ler.', c:['Letras']},
+        {t:'Produzir uma reportagem.', c:['Jornalismo']},
+        {t:'Criar campanhas para redes sociais.', c:['Publicidade']},
+        {t:'Editar vídeos, desenhar ou desenvolver projetos audiovisuais.', c:['Cinema']}
       ]}
     ]
   },
   { id:'exatas', name:'Exatas', tone:'--exatas', toneInk:'--exatas-ink',
-    courses:['Engenharia Civil','Engenharia de Produção','Engenharia Mecânica','Engenharia de Computação','Ciência da Computação','Arquitetura e Urbanismo','Sistemas de Informação','Matemática'],
+    courses:['Engenharia','Ciência da Computação','Arquitetura e Urbanismo','Estatística','Matemática'],
     questions:[
-      { q:'O que mais desperta seu interesse?', o:[
-        {t:'Prédios, pontes e estruturas', c:['Engenharia Civil']},
-        {t:'Processos e sistemas de produção mais eficientes', c:['Engenharia de Produção']},
-        {t:'Máquinas, motores e mecanismos', c:['Engenharia Mecânica']},
-        {t:'Hardware e sistemas embarcados', c:['Engenharia de Computação']}
+      { q:'O que mais te motiva em uma profissão?', o:[
+        {t:'Criar soluções para problemas reais e melhorar a vida das pessoas.', c:['Engenharia']},
+        {t:'Desenvolver tecnologias e sistemas inovadores.', c:['Ciência da Computação']},
+        {t:'Transformar ideias em espaços funcionais e criativos.', c:['Arquitetura e Urbanismo']},
+        {t:'Analisar informações para encontrar padrões e soluções.', c:['Estatística']}
       ]},
-      { q:'Qual desses temas mais te atrai?', o:[
-        {t:'Programas e sistemas de software', c:['Ciência da Computação']},
-        {t:'Projetar espaços com estética e função', c:['Arquitetura e Urbanismo']},
-        {t:'Gestão de tecnologia dentro de empresas', c:['Sistemas de Informação']},
-        {t:'Números, lógica e teoremas', c:['Matemática']}
+      { q:'Qual atividade parece mais interessante?', o:[
+        {t:'Projetar máquinas, estruturas ou grandes obras.', c:['Engenharia']},
+        {t:'Criar aplicativos, jogos ou programas.', c:['Ciência da Computação']},
+        {t:'Desenhar plantas e planejar ambientes.', c:['Arquitetura e Urbanismo']},
+        {t:'Resolver problemas utilizando números e lógica.', c:['Matemática']}
       ]},
-      { q:'Se você pudesse escolher um assunto para estudar a fundo, qual seria?', o:[
-        {t:'Prédios, pontes e estruturas', c:['Engenharia Civil']},
-        {t:'Máquinas, motores e mecanismos', c:['Engenharia Mecânica']},
-        {t:'Programas e sistemas de software', c:['Ciência da Computação']},
-        {t:'Gestão de tecnologia dentro de empresas', c:['Sistemas de Informação']}
+      { q:'O que desperta mais sua curiosidade?', o:[
+        {t:'Como máquinas e estruturas funcionam.', c:['Engenharia']},
+        {t:'Como computadores, inteligência artificial e softwares funcionam.', c:['Ciência da Computação']},
+        {t:'Como os espaços influenciam a vida das pessoas.', c:['Arquitetura e Urbanismo']},
+        {t:'Como os dados podem explicar acontecimentos.', c:['Estatística']}
       ]},
-      { q:'O que prende mais a sua atenção?', o:[
-        {t:'Processos e sistemas de produção mais eficientes', c:['Engenharia de Produção']},
-        {t:'Hardware e sistemas embarcados', c:['Engenharia de Computação']},
-        {t:'Projetar espaços com estética e função', c:['Arquitetura e Urbanismo']},
-        {t:'Números, lógica e teoremas', c:['Matemática']}
+      { q:'Qual habilidade mais combina com você?', o:[
+        {t:'Resolver problemas práticos.', c:['Engenharia']},
+        {t:'Pensar de forma lógica e criar soluções digitais.', c:['Ciência da Computação']},
+        {t:'Ter criatividade e visão espacial.', c:['Arquitetura e Urbanismo']},
+        {t:'Raciocínio matemático e análise.', c:['Matemática']}
       ]},
-      { q:'Qual desses campos de conhecimento mais te fascina?', o:[
-        {t:'Prédios, pontes e estruturas', c:['Engenharia Civil']},
-        {t:'Hardware e sistemas embarcados', c:['Engenharia de Computação']},
-        {t:'Projetar espaços com estética e função', c:['Arquitetura e Urbanismo']},
-        {t:'Gestão de tecnologia dentro de empresas', c:['Sistemas de Informação']}
-      ]},
-      { q:'Qual habilidade mais te representa?', o:[
-        {t:'Calcular estruturas e resistência de materiais', c:['Engenharia Civil']},
-        {t:'Organizar processos com eficiência', c:['Engenharia de Produção']},
-        {t:'Entender como as máquinas funcionam', c:['Engenharia Mecânica']},
-        {t:'Integrar software e componentes eletrônicos', c:['Engenharia de Computação']}
-      ]},
-      { q:'Em que tipo de tarefa você se sai melhor?', o:[
-        {t:'Resolver problemas lógicos e abstratos', c:['Ciência da Computação']},
-        {t:'Desenhar e projetar espaços', c:['Arquitetura e Urbanismo']},
-        {t:'Unir tecnologia e gestão de negócios', c:['Sistemas de Informação']},
-        {t:'Resolver problemas lógicos e abstratos', c:['Matemática']}
-      ]},
-      { q:'Qual desses talentos você reconhece em você mesmo?', o:[
-        {t:'Calcular estruturas e resistência de materiais', c:['Engenharia Civil']},
-        {t:'Entender como as máquinas funcionam', c:['Engenharia Mecânica']},
-        {t:'Resolver problemas lógicos e abstratos', c:['Ciência da Computação']},
-        {t:'Unir tecnologia e gestão de negócios', c:['Sistemas de Informação']}
-      ]},
-      { q:'Se te pedissem para resolver um problema, qual abordagem você usaria?', o:[
-        {t:'Organizar processos com eficiência', c:['Engenharia de Produção']},
-        {t:'Integrar software e componentes eletrônicos', c:['Engenharia de Computação']},
-        {t:'Desenhar e projetar espaços', c:['Arquitetura e Urbanismo']},
-        {t:'Resolver problemas lógicos e abstratos', c:['Matemática']}
-      ]},
-      { q:'O que as pessoas mais elogiam em você?', o:[
-        {t:'Calcular estruturas e resistência de materiais', c:['Engenharia Civil']},
-        {t:'Integrar software e componentes eletrônicos', c:['Engenharia de Computação']},
-        {t:'Desenhar e projetar espaços', c:['Arquitetura e Urbanismo']},
-        {t:'Unir tecnologia e gestão de negócios', c:['Sistemas de Informação']}
-      ]},
-      { q:'Onde você se imagina trabalhando no futuro?', o:[
-        {t:'Canteiro de obras', c:['Engenharia Civil']},
-        {t:'Fábrica ou linha de produção', c:['Engenharia de Produção']},
-        {t:'Indústria e fábricas de equipamentos', c:['Engenharia Mecânica']},
-        {t:'Empresa de tecnologia ou indústria', c:['Engenharia de Computação']}
+      { q:'Você prefere trabalhar…', o:[
+        {t:'Desenvolvendo projetos de engenharia e construções.', c:['Engenharia']},
+        {t:'Criando soluções tecnológicas.', c:['Ciência da Computação']},
+        {t:'Planejando ambientes e projetos arquitetônicos.', c:['Arquitetura e Urbanismo']},
+        {t:'Analisando dados e pesquisas.', c:['Estatística']}
       ]},
       { q:'Qual ambiente de trabalho mais combina com você?', o:[
-        {t:'Empresa de tecnologia', c:['Ciência da Computação']},
-        {t:'Escritório de arquitetura', c:['Arquitetura e Urbanismo']},
-        {t:'Departamento de TI de uma empresa', c:['Sistemas de Informação']},
-        {t:'Universidade ou instituto de pesquisa', c:['Matemática']}
+        {t:'Obras, indústrias ou empresas de engenharia.', c:['Engenharia']},
+        {t:'Empresas de tecnologia ou startups.', c:['Ciência da Computação']},
+        {t:'Escritórios de arquitetura e urbanismo.', c:['Arquitetura e Urbanismo']},
+        {t:'Empresas de pesquisa, bancos ou centros de análise de dados.', c:['Estatística']}
       ]},
-      { q:'Em qual desses cenários você se sentiria mais à vontade?', o:[
-        {t:'Canteiro de obras', c:['Engenharia Civil']},
-        {t:'Indústria e fábricas de equipamentos', c:['Engenharia Mecânica']},
-        {t:'Empresa de tecnologia', c:['Ciência da Computação']},
-        {t:'Departamento de TI de uma empresa', c:['Sistemas de Informação']}
+      { q:'O que mais te deixaria satisfeito(a)?', o:[
+        {t:'Ver uma obra ou projeto funcionando.', c:['Engenharia']},
+        {t:'Criar uma tecnologia que facilite a vida das pessoas.', c:['Ciência da Computação']},
+        {t:'Projetar um espaço bonito e funcional.', c:['Arquitetura e Urbanismo']},
+        {t:'Descobrir soluções por meio de números e informações.', c:['Estatística']}
       ]},
-      { q:'Se pudesse escolher seu local de trabalho ideal, qual seria?', o:[
-        {t:'Fábrica ou linha de produção', c:['Engenharia de Produção']},
-        {t:'Empresa de tecnologia ou indústria', c:['Engenharia de Computação']},
-        {t:'Escritório de arquitetura', c:['Arquitetura e Urbanismo']},
-        {t:'Universidade ou instituto de pesquisa', c:['Matemática']}
+      { q:'Você prefere…', o:[
+        {t:'Construir e desenvolver soluções.', c:['Engenharia']},
+        {t:'Programar e criar sistemas.', c:['Ciência da Computação']},
+        {t:'Criar e projetar.', c:['Arquitetura e Urbanismo']},
+        {t:'Analisar e interpretar informações.', c:['Matemática']}
       ]},
-      { q:'Qual rotina profissional mais combina com seu estilo?', o:[
-        {t:'Canteiro de obras', c:['Engenharia Civil']},
-        {t:'Empresa de tecnologia ou indústria', c:['Engenharia de Computação']},
-        {t:'Escritório de arquitetura', c:['Arquitetura e Urbanismo']},
-        {t:'Departamento de TI de uma empresa', c:['Sistemas de Informação']}
+      { q:'Se pudesse escolher um projeto…', o:[
+        {t:'Construir uma ponte, máquina ou estrutura sustentável.', c:['Engenharia']},
+        {t:'Desenvolver um aplicativo inovador.', c:['Ciência da Computação']},
+        {t:'Projetar uma escola, casa ou espaço público.', c:['Arquitetura e Urbanismo']},
+        {t:'Criar um modelo matemático para resolver um problema.', c:['Matemática']}
       ]},
-      { q:'O que mais te motivaria em uma carreira?', o:[
-        {t:'Construir espaços seguros e duradouros', c:['Engenharia Civil']},
-        {t:'Tornar processos produtivos mais eficientes', c:['Engenharia de Produção']},
-        {t:'Criar e aperfeiçoar máquinas e equipamentos', c:['Engenharia Mecânica']},
-        {t:'Criar sistemas que unem hardware e software', c:['Engenharia de Computação']}
+      { q:'O que você faria com mais prazer?', o:[
+        {t:'Resolver desafios de engenharia.', c:['Engenharia']},
+        {t:'Desenvolver softwares.', c:['Ciência da Computação']},
+        {t:'Criar projetos arquitetônicos.', c:['Arquitetura e Urbanismo']},
+        {t:'Trabalhar com estatísticas e gráficos.', c:['Estatística']}
       ]},
-      { q:'Qual causa você gostaria de defender profissionalmente?', o:[
-        {t:'Criar tecnologias que resolvem problemas reais', c:['Ciência da Computação']},
-        {t:'Planejar cidades e espaços mais humanos', c:['Arquitetura e Urbanismo']},
-        {t:'Tornar empresas mais eficientes com tecnologia', c:['Sistemas de Informação']},
-        {t:'Avançar o conhecimento matemático e científico', c:['Matemática']}
+      { q:'Qual situação combina mais com você?', o:[
+        {t:'Resolver um problema técnico em uma construção ou equipamento.', c:['Engenharia']},
+        {t:'Encontrar um erro em um programa.', c:['Ciência da Computação']},
+        {t:'Desenvolver um projeto criativo.', c:['Arquitetura e Urbanismo']},
+        {t:'Descobrir padrões em grandes quantidades de dados.', c:['Estatística']}
       ]},
-      { q:'O que te faria sentir realizado no trabalho?', o:[
-        {t:'Construir espaços seguros e duradouros', c:['Engenharia Civil']},
-        {t:'Criar e aperfeiçoar máquinas e equipamentos', c:['Engenharia Mecânica']},
-        {t:'Criar tecnologias que resolvem problemas reais', c:['Ciência da Computação']},
-        {t:'Tornar empresas mais eficientes com tecnologia', c:['Sistemas de Informação']}
+      { q:'O que mais te inspira?', o:[
+        {t:'Grandes obras e avanços tecnológicos.', c:['Engenharia']},
+        {t:'Tecnologia e inovação.', c:['Ciência da Computação']},
+        {t:'Arquitetura, design e criação de espaços.', c:['Arquitetura e Urbanismo']},
+        {t:'Pesquisas e descobertas baseadas em dados.', c:['Matemática']}
       ]},
-      { q:'Se pudesse causar um impacto no mundo, qual seria?', o:[
-        {t:'Tornar processos produtivos mais eficientes', c:['Engenharia de Produção']},
-        {t:'Criar sistemas que unem hardware e software', c:['Engenharia de Computação']},
-        {t:'Planejar cidades e espaços mais humanos', c:['Arquitetura e Urbanismo']},
-        {t:'Avançar o conhecimento matemático e científico', c:['Matemática']}
+      { q:'Você se identifica mais com…', o:[
+        {t:'Trabalhar em equipe para construir algo.', c:['Engenharia']},
+        {t:'Resolver desafios usando programação.', c:['Ciência da Computação']},
+        {t:'Transformar ideias em projetos visuais.', c:['Arquitetura e Urbanismo']},
+        {t:'Trabalhar com números, cálculos e análises.', c:['Estatística']}
       ]},
-      { q:'O que te move a querer seguir essa área?', o:[
-        {t:'Construir espaços seguros e duradouros', c:['Engenharia Civil']},
-        {t:'Criar sistemas que unem hardware e software', c:['Engenharia de Computação']},
-        {t:'Planejar cidades e espaços mais humanos', c:['Arquitetura e Urbanismo']},
-        {t:'Tornar empresas mais eficientes com tecnologia', c:['Sistemas de Informação']}
+      { q:'Qual conteúdo mais desperta sua curiosidade?', o:[
+        {t:'Física aplicada e funcionamento de máquinas.', c:['Engenharia']},
+        {t:'Programação, tecnologia e inteligência artificial.', c:['Ciência da Computação']},
+        {t:'Desenho técnico, construção e urbanismo.', c:['Arquitetura e Urbanismo']},
+        {t:'Matemática, estatística e análise de dados.', c:['Matemática']}
       ]},
-      { q:'No seu dia a dia ideal de trabalho, você estaria...?', o:[
-        {t:'Planejando e acompanhando construções', c:['Engenharia Civil']},
-        {t:'Otimizando fluxos e a gestão da produção', c:['Engenharia de Produção']},
-        {t:'Projetando e testando sistemas mecânicos', c:['Engenharia Mecânica']},
-        {t:'Desenvolvendo sistemas embarcados e eletrônicos', c:['Engenharia de Computação']}
-      ]},
-      { q:'Qual dessas atividades você faria de bom grado?', o:[
-        {t:'Programando e desenvolvendo softwares', c:['Ciência da Computação']},
-        {t:'Criando projetos arquitetônicos e urbanos', c:['Arquitetura e Urbanismo']},
-        {t:'Implementando e gerenciando sistemas de informação', c:['Sistemas de Informação']},
-        {t:'Pesquisando e ensinando matemática', c:['Matemática']}
-      ]},
-      { q:'Se surgisse um desafio no trabalho, qual você prefere enfrentar?', o:[
-        {t:'Planejando e acompanhando construções', c:['Engenharia Civil']},
-        {t:'Projetando e testando sistemas mecânicos', c:['Engenharia Mecânica']},
-        {t:'Programando e desenvolvendo softwares', c:['Ciência da Computação']},
-        {t:'Implementando e gerenciando sistemas de informação', c:['Sistemas de Informação']}
-      ]},
-      { q:'Qual tarefa prática mais te agrada?', o:[
-        {t:'Otimizando fluxos e a gestão da produção', c:['Engenharia de Produção']},
-        {t:'Desenvolvendo sistemas embarcados e eletrônicos', c:['Engenharia de Computação']},
-        {t:'Criando projetos arquitetônicos e urbanos', c:['Arquitetura e Urbanismo']},
-        {t:'Pesquisando e ensinando matemática', c:['Matemática']}
-      ]},
-      { q:'Imagine um dia comum de trabalho: o que você estaria fazendo?', o:[
-        {t:'Planejando e acompanhando construções', c:['Engenharia Civil']},
-        {t:'Desenvolvendo sistemas embarcados e eletrônicos', c:['Engenharia de Computação']},
-        {t:'Criando projetos arquitetônicos e urbanos', c:['Arquitetura e Urbanismo']},
-        {t:'Implementando e gerenciando sistemas de informação', c:['Sistemas de Informação']}
+      { q:'Qual atividade faria você perder a noção do tempo?', o:[
+        {t:'Montar, construir ou projetar algo.', c:['Engenharia']},
+        {t:'Programar um sistema ou jogo.', c:['Ciência da Computação']},
+        {t:'Criar plantas, modelos e projetos.', c:['Arquitetura e Urbanismo']},
+        {t:'Resolver problemas envolvendo lógica e números.', c:['Estatística']}
       ]}
     ]
   }
