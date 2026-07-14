@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Encontre seu curso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#eae3d3;
+    --paper-2:#e2dac6;
+    --card:#f6f1e4;
+    --ink:#232735;
+    --ink-soft:#5b5c6b;
+    --line: rgba(35,39,53,0.16);
+    --line-strong: rgba(35,39,53,0.32);
+
+    --saude:#c94f42;
+    --saude-ink:#5c1f19;
+    --humanas:#b3831f;
+    --humanas-ink:#4a3609;
+    --natureza:#4c7a52;
+    --natureza-ink:#1c3320;
+    --linguagens:#6e56a6;
+    --linguagens-ink:#2c2050;
+    --exatas:#2e6c8e;
+    --exatas-ink:#123448;
+
+    --accent: var(--ink);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    background-image:
+      radial-gradient(rgba(35,39,53,0.05) 1px, transparent 1px);
+    background-size: 22px 22px;
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    text-transform:uppercase;
+    letter-spacing:0.14em;
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    margin:0;
+    line-height:1.08;
+  }
+
+  button{ font-family:inherit; cursor:pointer; }
+
+  .screen{
+    display:none;
+    min-height:100vh;
+    width:100%;
+    padding: 56px 24px 80px;
+  }
+  .screen.active{ display:block; }
+
+  .wrap{
+    max-width:920px;
+    margin:0 auto;
+  }
+
+  /* ---------- HOME ---------- */
+
+  .home-header{
+    text-align:center;
+    margin-bottom:56px;
+  }
+  .home-header .eyebrow{ margin-bottom:18px; }
+  .home-header h1{
+    font-size: clamp(38px, 6vw, 64px);
+    letter-spacing:-0.01em;
+  }
+  .home-header h1 em{
+    font-style:italic;
+    color:var(--saude);
+  }
+  .home-header p{
+    max-width:520px;
+    margin:20px auto 0;
+    color:var(--ink-soft);
+    font-size:16px;
+    line-height:1.6;
+  }
+
+  .faculties{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:22px;
+    margin-bottom:48px;
+  }
+  @media (max-width:720px){ .faculties{ grid-template-columns:1fr; } }
+
+  .faculty-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:28px 26px;
+    position:relative;
+    box-shadow: 4px 4px 0 rgba(35,39,53,0.06);
+  }
+  .faculty-card::before{
+    content:attr(data-tag);
+    position:absolute;
+    top:-11px;
+    left:24px;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    padding:4px 10px;
+    border-radius:3px;
+  }
+  .faculty-card h3{
+    font-size:24px;
+    margin-top:6px;
+    margin-bottom:6px;
+  }
+  .faculty-card .loc{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-bottom:14px;
+    display:block;
+  }
+  .faculty-card p{
+    color:var(--ink-soft);
+    font-size:14.5px;
+    line-height:1.65;
+    margin:0 0 16px;
+  }
+  .faculty-card ul{
+    margin:0; padding:0; list-style:none;
+    display:flex; flex-wrap:wrap; gap:8px;
+  }
+  .faculty-card li{
+    font-size:12.5px;
+    font-family:'IBM Plex Mono', monospace;
+    border:1px solid var(--line-strong);
+    border-radius:3px;
+    padding:4px 9px;
+    color:var(--ink);
+  }
+
+  .cta-row{ text-align:center; }
+  .btn-primary{
+    background:var(--ink);
+    color:var(--paper);
+    border:none;
+    border-radius:4px;
+    padding:17px 34px;
+    font-size:15.5px;
+    font-weight:500;
+    letter-spacing:0.01em;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    transition:transform .15s ease, background .15s ease;
+  }
+  .btn-primary:hover{ background:#3a3f52; transform:translateY(-2px); }
+  .btn-primary svg{ width:16px; height:16px; }
+
+  /* ---------- AREAS ---------- */
+
+  .back-link{
+    background:none; border:none; color:var(--ink-soft);
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px;
+    display:inline-flex; align-items:center; gap:6px;
+    margin-bottom:34px; padding:0;
+  }
+  .back-link:hover{ color:var(--ink); }
+
+  .areas-header{ margin-bottom:40px; }
+  .areas-header h2{ font-size: clamp(30px,4.5vw,42px); margin-bottom:10px; }
+  .areas-header p{ color:var(--ink-soft); font-size:15.5px; max-width:520px; }
+
+  .area-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:16px;
+  }
+  @media (max-width:760px){ .area-grid{ grid-template-columns: repeat(2,1fr); } }
+  @media (max-width:480px){ .area-grid{ grid-template-columns: 1fr; } }
+
+  .area-card{
+    text-align:left;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-left:5px solid var(--tone);
+    border-radius:4px;
+    padding:22px 20px;
+    min-height:150px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .area-card:hover{
+    transform:translateY(-3px);
+    box-shadow:4px 6px 0 rgba(35,39,53,0.10);
+  }
+  .area-card .num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--tone-ink);
+    letter-spacing:0.08em;
+  }
+  .area-card h3{
+    font-size:21px;
+    margin-top:14px;
+    color:var(--ink);
+  }
+  .area-card .count{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--ink-soft);
+    margin-top:10px;
+  }
+
+  /* ---------- QUIZ ---------- */
+
+  .quiz-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:10px;
+  }
+  .quiz-badge{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:0.08em;
+    padding:5px 11px;
+    border-radius:3px;
+    background:var(--tone);
+    color:var(--tone-ink);
+  }
+  .quiz-counter{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+
+  .progress-track{
+    height:4px;
+    background:var(--line);
+    border-radius:2px;
+    margin: 18px 0 40px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--tone);
+    border-radius:2px;
+    transition:width .35s ease;
+  }
+
+  .question-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:44px 40px;
+    position:relative;
+  }
+  .question-card::before, .question-card::after{
+    content:"";
+    position:absolute;
+    width:14px; height:14px;
+    border-radius:50%;
+    background:var(--paper);
+    border:1px solid var(--line);
+    top:50%;
+    transform:translateY(-50%);
+  }
+  .question-card::before{ left:-8px; }
+  .question-card::after{ right:-8px; }
+
+  @media (max-width:600px){ .question-card{ padding:32px 22px; } }
+
+  .question-card h3{
+    font-size: clamp(21px, 3.2vw, 27px);
+    margin-bottom: 28px;
+    line-height:1.3;
+  }
+
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .option-btn{
+    text-align:left;
+    background:var(--paper);
+    border:1px solid var(--line-strong);
+    border-radius:5px;
+    padding:16px 18px;
+    font-size:15px;
+    color:var(--ink);
+    display:flex;
+    align-items:center;
+    gap:14px;
+    transition:border-color .12s ease, background .12s ease;
+  }
+  .option-btn .letter{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    width:24px; height:24px;
+    border-radius:50%;
+    border:1px solid var(--line-strong);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .option-btn:hover{
+    border-color:var(--tone);
+    background:var(--card);
+  }
+  .option-btn:hover .letter{
+    background:var(--tone);
+    color:var(--tone-ink);
+    border-color:var(--tone);
+  }
+
+  .quiz-nav{
+    display:flex;
+    justify-content:flex-start;
+    margin-top:22px;
+  }
+  .link-btn{
+    background:none; border:none; color:var(--ink-soft);
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px;
+    padding:0;
+  }
+  .link-btn:hover{ color:var(--ink); }
+
+  /* ---------- RESULTS ---------- */
+
+  .ticket{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:0;
+    overflow:hidden;
+    position:relative;
+  }
+  .ticket-head{
+    padding:38px 40px 26px;
+    border-bottom:1px dashed var(--line-strong);
+    position:relative;
+  }
+  .ticket-head .eyebrow{ margin-bottom:14px; }
+  .ticket-head h2{
+    font-size: clamp(28px,4vw,38px);
+    color:var(--tone-ink);
+  }
+  .stamp{
+    position:absolute;
+    top:30px; right:36px;
+    border:2px solid var(--tone-ink);
+    color:var(--tone-ink);
+    border-radius:50%;
+    width:88px; height:88px;
+    display:flex; align-items:center; justify-content:center;
+    text-align:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.06em;
+    transform:rotate(10deg);
+    line-height:1.3;
+  }
+  @media (max-width:600px){ .stamp{ display:none; } }
+
+  .ticket-notch-l, .ticket-notch-r{
+    position:absolute; width:22px; height:22px; border-radius:50%;
+    background:var(--paper); border:1px solid var(--line);
+    top: 50%; transform:translateY(-50%);
+  }
+
+  .ticket-body{ padding:32px 40px 40px; }
+
+  .match-row{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    padding:14px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .match-row:last-child{ border-bottom:none; }
+  .match-rank{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--ink-soft);
+    width:22px;
+  }
+  .match-name{
+    flex:1;
+    font-size:16.5px;
+    font-weight:500;
+  }
+  .match-bar-track{
+    width:130px;
+    height:8px;
+    background:var(--paper-2);
+    border-radius:4px;
+    overflow:hidden;
+  }
+  @media (max-width:560px){ .match-bar-track{ width:70px; } }
+  .match-bar-fill{
+    height:100%;
+    background:var(--tone);
+    border-radius:4px;
+  }
+  .match-pct{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    width:38px;
+    text-align:right;
+  }
+
+  .results-actions{
+    display:flex;
+    gap:12px;
+    margin-top:34px;
+    flex-wrap:wrap;
+  }
+  .btn-secondary{
+    background:transparent;
+    border:1px solid var(--line-strong);
+    border-radius:4px;
+    padding:13px 22px;
+    font-size:14px;
+    color:var(--ink);
+  }
+  .btn-secondary:hover{ border-color:var(--ink); }
+
+  .sr-only{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+
+  ::selection{ background:var(--ink); color:var(--paper); }
+</style>
+</head>
+<body>
+
+<!-- ======================= HOME ======================= -->
+<section class="screen active" id="screen-home">
+  <div class="wrap">
+    <div class="home-header">
+      <span class="eyebrow">Orientação vocacional</span>
+      <h1>Duas faculdades.<br><em>Um caminho</em> só seu.</h1>
+      <p>Conheça as instituições, descubra sua área de interesse e veja quais cursos combinam com o seu perfil — em menos de 5 minutos.</p>
+    </div>
+
+    <div class="faculties">
+      <article class="faculty-card" data-tag=" UERJ">
+        <span class="loc">[Universidade do Estado do Rio de Janeiro] · [Rio de Janeiro, RJ]</span>
+        <h3> UERJ <img src="uerj-logo.png" alt="Logo da UERJ" style="width: 30px; height: auto;"> </h3> 
+        <h6><img src="uerj-campus.jpg" alt="Campus" style="width: 200px; height: auto;" >  Campus Maracanã </h6>
+        <p>A UERJ é uma das principais universidades públicas do Brasil, reconhecida pela qualidade do ensino, pesquisa e extensão. Possui infraestrutura completa e corpo docente altamente qualificado. Também é referência por seu pioneirismo no sistema de cotas.</p>
+        <ul>
+          <li>[Diferencial 1]</li>
+          <li>[Diferencial 2]</li>
+          <li>[Diferencial 3]</li>
+        </ul>
+      </article>
+
+      <article class="faculty-card" data-tag=" UFRJ">
+        <span class="loc">[Universidade Federal do Rio de Janeiro] · [Rio de Janeiro, RJ]</span>
+        <h3> UFRJ <img src="ufrj-logo.png" alt="Logo da UFRJ" style="width: 30px; height: auto;"> </h3>
+        <h6><img src="ufrj-campus.jpg" alt="Campus" style="width: 200px; height: auto;" >  Campus Cidade Universitaria </h6>
+        <p>A UFRJ é a primeira universidade federal do Brasil e referência em ensino, pesquisa e inovação. Conta com infraestrutura moderna e professores de excelência. Destaca-se pela produção científica e impacto nacional e internacional. </p>
+        <ul>
+          <li>[Diferencial 1]</li>
+          <li>[Diferencial 2]</li>
+          <li>[Diferencial 3]</li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="cta-row">
+      <button class="btn-primary" onclick="goTo('areas')">
+        Descobrir meu curso ideal
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= AREAS ======================= -->
+<section class="screen" id="screen-areas">
+  <div class="wrap">
+    <button class="back-link" onclick="goTo('home')">&larr; Voltar ao início</button>
+    <div class="areas-header">
+      <h2>Qual área te representa mais?</h2>
+      <p>Escolha a área que mais desperta seu interesse. A partir dela, você responde um questionário rápido que aponta os cursos com maior aderência ao seu perfil.</p>
+    </div>
+    <div class="area-grid" id="area-grid"></div>
+  </div>
+</section>
+
+<!-- ======================= QUIZ ======================= -->
+<section class="screen" id="screen-quiz">
+  <div class="wrap" style="max-width:680px;">
+    <button class="back-link" onclick="goTo('areas')">&larr; Trocar de área</button>
+    <div class="quiz-top">
+      <span class="quiz-badge" id="quiz-badge"></span>
+      <span class="quiz-counter" id="quiz-counter"></span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+
+    <div class="question-card">
+      <h3 id="question-text"></h3>
+      <div class="options" id="options-list"></div>
+    </div>
+
+    <div class="quiz-nav">
+      <button class="link-btn" id="btn-back-question" onclick="prevQuestion()">&larr; Pergunta anterior</button>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= RESULTS ======================= -->
+<section class="screen" id="screen-results">
+  <div class="wrap" style="max-width:680px;">
+    <button class="back-link" onclick="goTo('areas')">&larr; Escolher outra área</button>
+
+    <div class="ticket">
+      <div class="ticket-head">
+        <span class="eyebrow" id="result-area-label"></span>
+        <h2>Seu curso combina com...</h2>
+        <div class="stamp">RESULTADO<br>DO TESTE</div>
+      </div>
+      <div class="ticket-body">
+        <div id="matches-list"></div>
+        <div class="results-actions">
+          <button class="btn-primary" onclick="restartQuiz()">Refazer este teste</button>
+          <button class="btn-secondary" onclick="goTo('areas')">Testar outra área</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+const AREAS = [
+  { id:'saude', name:'Saúde', tone:'--saude', toneInk:'--saude-ink',
+    courses:['Medicina','Psicologia','Nutrição','Enfermagem','Fisioterapia','Odontologia','Farmácia','Biomedicina'],
+    questions:[
+      { q:'O que mais desperta seu interesse?', o:[
+        {t:'Diagnosticar e tratar doenças complexas', c:['Medicina']},
+        {t:'Compreender emoções e o comportamento humano', c:['Psicologia']},
+        {t:'Alimentação e seus efeitos na saúde', c:['Nutrição']},
+        {t:'Cuidar diretamente de pacientes no dia a dia', c:['Enfermagem']}
+      ]},
+      { q:'Qual desses temas mais te atrai?', o:[
+        {t:'O corpo em movimento e a reabilitação', c:['Fisioterapia']},
+        {t:'Saúde bucal e procedimentos odontológicos', c:['Odontologia']},
+        {t:'Medicamentos e como agem no corpo', c:['Farmácia']},
+        {t:'Exames, diagnósticos e pesquisa laboratorial', c:['Biomedicina']}
+      ]},
+      { q:'Se você pudesse escolher um assunto para estudar a fundo, qual seria?', o:[
+        {t:'Diagnosticar e tratar doenças complexas', c:['Medicina']},
+        {t:'Alimentação e seus efeitos na saúde', c:['Nutrição']},
+        {t:'O corpo em movimento e a reabilitação', c:['Fisioterapia']},
+        {t:'Medicamentos e como agem no corpo', c:['Farmácia']}
+      ]},
+      { q:'O que prende mais a sua atenção?', o:[
+        {t:'Compreender emoções e o comportamento humano', c:['Psicologia']},
+        {t:'Cuidar diretamente de pacientes no dia a dia', c:['Enfermagem']},
+        {t:'Saúde bucal e procedimentos odontológicos', c:['Odontologia']},
+        {t:'Exames, diagnósticos e pesquisa laboratorial', c:['Biomedicina']}
+      ]},
+      { q:'Qual desses campos de conhecimento mais te fascina?', o:[
+        {t:'Diagnosticar e tratar doenças complexas', c:['Medicina']},
+        {t:'Cuidar diretamente de pacientes no dia a dia', c:['Enfermagem']},
+        {t:'Saúde bucal e procedimentos odontológicos', c:['Odontologia']},
+        {t:'Medicamentos e como agem no corpo', c:['Farmácia']}
+      ]},
+      { q:'Qual habilidade mais te representa?', o:[
+        {t:'Tomar decisões rápidas em situações de risco', c:['Medicina']},
+        {t:'Ouvir com atenção e empatia', c:['Psicologia']},
+        {t:'Montar planos e orientar mudanças de hábito', c:['Nutrição']},
+        {t:'Prestar cuidados com atenção e acolhimento', c:['Enfermagem']}
+      ]},
+      { q:'Em que tipo de tarefa você se sai melhor?', o:[
+        {t:'Trabalhar com exercícios terapêuticos', c:['Fisioterapia']},
+        {t:'Trabalho manual preciso e delicado', c:['Odontologia']},
+        {t:'Testes e experimentos com precisão técnica', c:['Farmácia']},
+        {t:'Analisar dados e resultados com rigor científico', c:['Biomedicina']}
+      ]},
+      { q:'Qual desses talentos você reconhece em você mesmo?', o:[
+        {t:'Tomar decisões rápidas em situações de risco', c:['Medicina']},
+        {t:'Montar planos e orientar mudanças de hábito', c:['Nutrição']},
+        {t:'Trabalhar com exercícios terapêuticos', c:['Fisioterapia']},
+        {t:'Testes e experimentos com precisão técnica', c:['Farmácia']}
+      ]},
+      { q:'Se te pedissem para resolver um problema, qual abordagem você usaria?', o:[
+        {t:'Ouvir com atenção e empatia', c:['Psicologia']},
+        {t:'Prestar cuidados com atenção e acolhimento', c:['Enfermagem']},
+        {t:'Trabalho manual preciso e delicado', c:['Odontologia']},
+        {t:'Analisar dados e resultados com rigor científico', c:['Biomedicina']}
+      ]},
+      { q:'O que as pessoas mais elogiam em você?', o:[
+        {t:'Tomar decisões rápidas em situações de risco', c:['Medicina']},
+        {t:'Prestar cuidados com atenção e acolhimento', c:['Enfermagem']},
+        {t:'Trabalho manual preciso e delicado', c:['Odontologia']},
+        {t:'Testes e experimentos com precisão técnica', c:['Farmácia']}
+      ]},
+      { q:'Onde você se imagina trabalhando no futuro?', o:[
+        {t:'Hospital ou pronto-socorro', c:['Medicina']},
+        {t:'Consultório, com atendimentos individuais', c:['Psicologia']},
+        {t:'Clínica de nutrição ou consultório próprio', c:['Nutrição']},
+        {t:'Hospital, UBS ou unidade de saúde', c:['Enfermagem']}
+      ]},
+      { q:'Qual ambiente de trabalho mais combina com você?', o:[
+        {t:'Clínica de reabilitação ou centro esportivo', c:['Fisioterapia']},
+        {t:'Consultório odontológico próprio', c:['Odontologia']},
+        {t:'Farmácia, indústria ou laboratório farmacêutico', c:['Farmácia']},
+        {t:'Laboratório de análises clínicas ou pesquisa', c:['Biomedicina']}
+      ]},
+      { q:'Em qual desses cenários você se sentiria mais à vontade?', o:[
+        {t:'Hospital ou pronto-socorro', c:['Medicina']},
+        {t:'Clínica de nutrição ou consultório próprio', c:['Nutrição']},
+        {t:'Clínica de reabilitação ou centro esportivo', c:['Fisioterapia']},
+        {t:'Farmácia, indústria ou laboratório farmacêutico', c:['Farmácia']}
+      ]},
+      { q:'Se pudesse escolher seu local de trabalho ideal, qual seria?', o:[
+        {t:'Consultório, com atendimentos individuais', c:['Psicologia']},
+        {t:'Hospital, UBS ou unidade de saúde', c:['Enfermagem']},
+        {t:'Consultório odontológico próprio', c:['Odontologia']},
+        {t:'Laboratório de análises clínicas ou pesquisa', c:['Biomedicina']}
+      ]},
+      { q:'Qual rotina profissional mais combina com seu estilo?', o:[
+        {t:'Hospital ou pronto-socorro', c:['Medicina']},
+        {t:'Hospital, UBS ou unidade de saúde', c:['Enfermagem']},
+        {t:'Consultório odontológico próprio', c:['Odontologia']},
+        {t:'Farmácia, indústria ou laboratório farmacêutico', c:['Farmácia']}
+      ]},
+      { q:'O que mais te motivaria em uma carreira?', o:[
+        {t:'Salvar vidas em emergências', c:['Medicina']},
+        {t:'Ajudar pessoas a lidar com ansiedade e traumas', c:['Psicologia']},
+        {t:'Prevenir doenças através da alimentação', c:['Nutrição']},
+        {t:'Estar ao lado do paciente em todos os momentos', c:['Enfermagem']}
+      ]},
+      { q:'Qual causa você gostaria de defender profissionalmente?', o:[
+        {t:'Ajudar pessoas a recuperar sua mobilidade', c:['Fisioterapia']},
+        {t:'Devolver sorrisos e autoestima às pessoas', c:['Odontologia']},
+        {t:'Desenvolver tratamentos que ajudam pacientes', c:['Farmácia']},
+        {t:'Contribuir para diagnósticos precisos', c:['Biomedicina']}
+      ]},
+      { q:'O que te faria sentir realizado no trabalho?', o:[
+        {t:'Salvar vidas em emergências', c:['Medicina']},
+        {t:'Prevenir doenças através da alimentação', c:['Nutrição']},
+        {t:'Ajudar pessoas a recuperar sua mobilidade', c:['Fisioterapia']},
+        {t:'Desenvolver tratamentos que ajudam pacientes', c:['Farmácia']}
+      ]},
+      { q:'Se pudesse causar um impacto no mundo, qual seria?', o:[
+        {t:'Ajudar pessoas a lidar com ansiedade e traumas', c:['Psicologia']},
+        {t:'Estar ao lado do paciente em todos os momentos', c:['Enfermagem']},
+        {t:'Devolver sorrisos e autoestima às pessoas', c:['Odontologia']},
+        {t:'Contribuir para diagnósticos precisos', c:['Biomedicina']}
+      ]},
+      { q:'O que te move a querer seguir essa área?', o:[
+        {t:'Salvar vidas em emergências', c:['Medicina']},
+        {t:'Estar ao lado do paciente em todos os momentos', c:['Enfermagem']},
+        {t:'Devolver sorrisos e autoestima às pessoas', c:['Odontologia']},
+        {t:'Desenvolver tratamentos que ajudam pacientes', c:['Farmácia']}
+      ]},
+      { q:'No seu dia a dia ideal de trabalho, você estaria...?', o:[
+        {t:'Examinando pacientes e definindo tratamentos', c:['Medicina']},
+        {t:'Conduzindo sessões de terapia e escuta', c:['Psicologia']},
+        {t:'Elaborando cardápios e acompanhando pacientes', c:['Nutrição']},
+        {t:'Administrando cuidados e acompanhando a recuperação', c:['Enfermagem']}
+      ]},
+      { q:'Qual dessas atividades você faria de bom grado?', o:[
+        {t:'Aplicando técnicas de reabilitação física', c:['Fisioterapia']},
+        {t:'Realizando procedimentos e tratamentos dentários', c:['Odontologia']},
+        {t:'Manipulando e orientando sobre medicamentos', c:['Farmácia']},
+        {t:'Realizando exames e análises laboratoriais', c:['Biomedicina']}
+      ]},
+      { q:'Se surgisse um desafio no trabalho, qual você prefere enfrentar?', o:[
+        {t:'Examinando pacientes e definindo tratamentos', c:['Medicina']},
+        {t:'Elaborando cardápios e acompanhando pacientes', c:['Nutrição']},
+        {t:'Aplicando técnicas de reabilitação física', c:['Fisioterapia']},
+        {t:'Manipulando e orientando sobre medicamentos', c:['Farmácia']}
+      ]},
+      { q:'Qual tarefa prática mais te agrada?', o:[
+        {t:'Conduzindo sessões de terapia e escuta', c:['Psicologia']},
+        {t:'Administrando cuidados e acompanhando a recuperação', c:['Enfermagem']},
+        {t:'Realizando procedimentos e tratamentos dentários', c:['Odontologia']},
+        {t:'Realizando exames e análises laboratoriais', c:['Biomedicina']}
+      ]},
+      { q:'Imagine um dia comum de trabalho: o que você estaria fazendo?', o:[
+        {t:'Examinando pacientes e definindo tratamentos', c:['Medicina']},
+        {t:'Administrando cuidados e acompanhando a recuperação', c:['Enfermagem']},
+        {t:'Realizando procedimentos e tratamentos dentários', c:['Odontologia']},
+        {t:'Manipulando e orientando sobre medicamentos', c:['Farmácia']}
+      ]}
+    ]
+  },
+  { id:'humanas', name:'Ciências humanas', tone:'--humanas', toneInk:'--humanas-ink',
+    courses:['Direito','Pedagogia','História','Geografia','Serviço Social','Ciências Sociais','Relações Internacionais','Administração'],
+    questions:[
+      { q:'O que mais desperta seu interesse?', o:[
+        {t:'Justiça, leis e defesa de direitos', c:['Direito']},
+        {t:'Ensinar e formar pessoas', c:['Pedagogia']},
+        {t:'O passado e suas transformações', c:['História']},
+        {t:'Espaço, território e meio ambiente', c:['Geografia']}
+      ]},
+      { q:'Qual desses temas mais te atrai?', o:[
+        {t:'Questões sociais e desigualdade', c:['Serviço Social']},
+        {t:'Comportamento de grupos e sociedades', c:['Ciências Sociais']},
+        {t:'Diplomacia e relações entre países', c:['Relações Internacionais']},
+        {t:'Gestão de empresas e de pessoas', c:['Administração']}
+      ]},
+      { q:'Se você pudesse escolher um assunto para estudar a fundo, qual seria?', o:[
+        {t:'Justiça, leis e defesa de direitos', c:['Direito']},
+        {t:'O passado e suas transformações', c:['História']},
+        {t:'Questões sociais e desigualdade', c:['Serviço Social']},
+        {t:'Diplomacia e relações entre países', c:['Relações Internacionais']}
+      ]},
+      { q:'O que prende mais a sua atenção?', o:[
+        {t:'Ensinar e formar pessoas', c:['Pedagogia']},
+        {t:'Espaço, território e meio ambiente', c:['Geografia']},
+        {t:'Comportamento de grupos e sociedades', c:['Ciências Sociais']},
+        {t:'Gestão de empresas e de pessoas', c:['Administração']}
+      ]},
+      { q:'Qual desses campos de conhecimento mais te fascina?', o:[
+        {t:'Justiça, leis e defesa de direitos', c:['Direito']},
+        {t:'Espaço, território e meio ambiente', c:['Geografia']},
+        {t:'Comportamento de grupos e sociedades', c:['Ciências Sociais']},
+        {t:'Diplomacia e relações entre países', c:['Relações Internacionais']}
+      ]},
+      { q:'Qual habilidade mais te representa?', o:[
+        {t:'Argumentar e defender pontos de vista', c:['Direito']},
+        {t:'Explicar ideias de forma clara e paciente', c:['Pedagogia']},
+        {t:'Investigar fontes e documentos', c:['História']},
+        {t:'Analisar mapas e dados territoriais', c:['Geografia']}
+      ]},
+      { q:'Em que tipo de tarefa você se sai melhor?', o:[
+        {t:'Ajudar comunidades em situação de vulnerabilidade', c:['Serviço Social']},
+        {t:'Pesquisar e interpretar fenômenos sociais', c:['Ciências Sociais']},
+        {t:'Negociar e mediar conflitos', c:['Relações Internacionais']},
+        {t:'Planejar e liderar equipes', c:['Administração']}
+      ]},
+      { q:'Qual desses talentos você reconhece em você mesmo?', o:[
+        {t:'Argumentar e defender pontos de vista', c:['Direito']},
+        {t:'Investigar fontes e documentos', c:['História']},
+        {t:'Ajudar comunidades em situação de vulnerabilidade', c:['Serviço Social']},
+        {t:'Negociar e mediar conflitos', c:['Relações Internacionais']}
+      ]},
+      { q:'Se te pedissem para resolver um problema, qual abordagem você usaria?', o:[
+        {t:'Explicar ideias de forma clara e paciente', c:['Pedagogia']},
+        {t:'Analisar mapas e dados territoriais', c:['Geografia']},
+        {t:'Pesquisar e interpretar fenômenos sociais', c:['Ciências Sociais']},
+        {t:'Planejar e liderar equipes', c:['Administração']}
+      ]},
+      { q:'O que as pessoas mais elogiam em você?', o:[
+        {t:'Argumentar e defender pontos de vista', c:['Direito']},
+        {t:'Analisar mapas e dados territoriais', c:['Geografia']},
+        {t:'Pesquisar e interpretar fenômenos sociais', c:['Ciências Sociais']},
+        {t:'Negociar e mediar conflitos', c:['Relações Internacionais']}
+      ]},
+      { q:'Onde você se imagina trabalhando no futuro?', o:[
+        {t:'Escritório de advocacia ou tribunal', c:['Direito']},
+        {t:'Escola ou espaço de educação infantil', c:['Pedagogia']},
+        {t:'Museu, arquivo histórico ou centro de pesquisa', c:['História']},
+        {t:'Trabalho de campo e estudos urbanos', c:['Geografia']}
+      ]},
+      { q:'Qual ambiente de trabalho mais combina com você?', o:[
+        {t:'ONG ou órgão público de assistência social', c:['Serviço Social']},
+        {t:'Universidade, institutos de pesquisa', c:['Ciências Sociais']},
+        {t:'Embaixadas, organismos internacionais', c:['Relações Internacionais']},
+        {t:'Empresas de diversos portes e setores', c:['Administração']}
+      ]},
+      { q:'Em qual desses cenários você se sentiria mais à vontade?', o:[
+        {t:'Escritório de advocacia ou tribunal', c:['Direito']},
+        {t:'Museu, arquivo histórico ou centro de pesquisa', c:['História']},
+        {t:'ONG ou órgão público de assistência social', c:['Serviço Social']},
+        {t:'Embaixadas, organismos internacionais', c:['Relações Internacionais']}
+      ]},
+      { q:'Se pudesse escolher seu local de trabalho ideal, qual seria?', o:[
+        {t:'Escola ou espaço de educação infantil', c:['Pedagogia']},
+        {t:'Trabalho de campo e estudos urbanos', c:['Geografia']},
+        {t:'Universidade, institutos de pesquisa', c:['Ciências Sociais']},
+        {t:'Empresas de diversos portes e setores', c:['Administração']}
+      ]},
+      { q:'Qual rotina profissional mais combina com seu estilo?', o:[
+        {t:'Escritório de advocacia ou tribunal', c:['Direito']},
+        {t:'Trabalho de campo e estudos urbanos', c:['Geografia']},
+        {t:'Universidade, institutos de pesquisa', c:['Ciências Sociais']},
+        {t:'Embaixadas, organismos internacionais', c:['Relações Internacionais']}
+      ]},
+      { q:'O que mais te motivaria em uma carreira?', o:[
+        {t:'Lutar por justiça e pelos direitos das pessoas', c:['Direito']},
+        {t:'Formar a próxima geração', c:['Pedagogia']},
+        {t:'Preservar e contar a memória da humanidade', c:['História']},
+        {t:'Entender e cuidar do espaço em que vivemos', c:['Geografia']}
+      ]},
+      { q:'Qual causa você gostaria de defender profissionalmente?', o:[
+        {t:'Lutar por igualdade e justiça social', c:['Serviço Social']},
+        {t:'Entender por que o mundo é como é', c:['Ciências Sociais']},
+        {t:'Conectar o Brasil ao resto do mundo', c:['Relações Internacionais']},
+        {t:'Tornar organizações mais eficientes', c:['Administração']}
+      ]},
+      { q:'O que te faria sentir realizado no trabalho?', o:[
+        {t:'Lutar por justiça e pelos direitos das pessoas', c:['Direito']},
+        {t:'Preservar e contar a memória da humanidade', c:['História']},
+        {t:'Lutar por igualdade e justiça social', c:['Serviço Social']},
+        {t:'Conectar o Brasil ao resto do mundo', c:['Relações Internacionais']}
+      ]},
+      { q:'Se pudesse causar um impacto no mundo, qual seria?', o:[
+        {t:'Formar a próxima geração', c:['Pedagogia']},
+        {t:'Entender e cuidar do espaço em que vivemos', c:['Geografia']},
+        {t:'Entender por que o mundo é como é', c:['Ciências Sociais']},
+        {t:'Tornar organizações mais eficientes', c:['Administração']}
+      ]},
+      { q:'O que te move a querer seguir essa área?', o:[
+        {t:'Lutar por justiça e pelos direitos das pessoas', c:['Direito']},
+        {t:'Entender e cuidar do espaço em que vivemos', c:['Geografia']},
+        {t:'Entender por que o mundo é como é', c:['Ciências Sociais']},
+        {t:'Conectar o Brasil ao resto do mundo', c:['Relações Internacionais']}
+      ]},
+      { q:'No seu dia a dia ideal de trabalho, você estaria...?', o:[
+        {t:'Analisando processos e construindo argumentos jurídicos', c:['Direito']},
+        {t:'Planejando aulas e acompanhando o aprendizado de crianças', c:['Pedagogia']},
+        {t:'Pesquisando e interpretando fatos históricos', c:['História']},
+        {t:'Mapeando e estudando transformações no território', c:['Geografia']}
+      ]},
+      { q:'Qual dessas atividades você faria de bom grado?', o:[
+        {t:'Atendendo famílias e articulando políticas sociais', c:['Serviço Social']},
+        {t:'Realizando pesquisas sobre cultura e sociedade', c:['Ciências Sociais']},
+        {t:'Acompanhando negociações e política externa', c:['Relações Internacionais']},
+        {t:'Organizando processos e tomando decisões estratégicas', c:['Administração']}
+      ]},
+      { q:'Se surgisse um desafio no trabalho, qual você prefere enfrentar?', o:[
+        {t:'Analisando processos e construindo argumentos jurídicos', c:['Direito']},
+        {t:'Pesquisando e interpretando fatos históricos', c:['História']},
+        {t:'Atendendo famílias e articulando políticas sociais', c:['Serviço Social']},
+        {t:'Acompanhando negociações e política externa', c:['Relações Internacionais']}
+      ]},
+      { q:'Qual tarefa prática mais te agrada?', o:[
+        {t:'Planejando aulas e acompanhando o aprendizado de crianças', c:['Pedagogia']},
+        {t:'Mapeando e estudando transformações no território', c:['Geografia']},
+        {t:'Realizando pesquisas sobre cultura e sociedade', c:['Ciências Sociais']},
+        {t:'Organizando processos e tomando decisões estratégicas', c:['Administração']}
+      ]},
+      { q:'Imagine um dia comum de trabalho: o que você estaria fazendo?', o:[
+        {t:'Analisando processos e construindo argumentos jurídicos', c:['Direito']},
+        {t:'Mapeando e estudando transformações no território', c:['Geografia']},
+        {t:'Realizando pesquisas sobre cultura e sociedade', c:['Ciências Sociais']},
+        {t:'Acompanhando negociações e política externa', c:['Relações Internacionais']}
+      ]}
+    ]
+  },
+  { id:'natureza', name:'Ciências da natureza', tone:'--natureza', toneInk:'--natureza-ink',
+    courses:['Ciências Biológicas','Química','Física','Geologia','Oceanografia','Meteorologia'],
+    questions:[
+      { q:'O que mais desperta seu interesse?', o:[
+        {t:'Seres vivos e ecossistemas', c:['Ciências Biológicas']},
+        {t:'Reações e substâncias químicas', c:['Química']},
+        {t:'As leis do universo e da matéria', c:['Física']},
+        {t:'Rochas, minerais e a formação da Terra', c:['Geologia']}
+      ]},
+      { q:'Qual desses temas mais te atrai?', o:[
+        {t:'As leis do universo e da matéria', c:['Física']},
+        {t:'Rochas, minerais e a formação da Terra', c:['Geologia']},
+        {t:'A vida marinha e os oceanos', c:['Oceanografia']},
+        {t:'A previsão do tempo e o clima', c:['Meteorologia']}
+      ]},
+      { q:'Se você pudesse escolher um assunto para estudar a fundo, qual seria?', o:[
+        {t:'Seres vivos e ecossistemas', c:['Ciências Biológicas']},
+        {t:'Reações e substâncias químicas', c:['Química']},
+        {t:'A vida marinha e os oceanos', c:['Oceanografia']},
+        {t:'A previsão do tempo e o clima', c:['Meteorologia']}
+      ]},
+      { q:'O que prende mais a sua atenção?', o:[
+        {t:'Reações e substâncias químicas', c:['Química']},
+        {t:'As leis do universo e da matéria', c:['Física']},
+        {t:'A vida marinha e os oceanos', c:['Oceanografia']},
+        {t:'A previsão do tempo e o clima', c:['Meteorologia']}
+      ]},
+      { q:'Qual desses campos de conhecimento mais te fascina?', o:[
+        {t:'Seres vivos e ecossistemas', c:['Ciências Biológicas']},
+        {t:'Rochas, minerais e a formação da Terra', c:['Geologia']},
+        {t:'A vida marinha e os oceanos', c:['Oceanografia']},
+        {t:'A previsão do tempo e o clima', c:['Meteorologia']}
+      ]},
+      { q:'Qual habilidade mais te representa?', o:[
+        {t:'Observar e classificar a natureza', c:['Ciências Biológicas']},
+        {t:'Fazer experimentos com precisão técnica', c:['Química']},
+        {t:'Resolver problemas com cálculos precisos', c:['Física']},
+        {t:'Investigar o passado geológico da Terra', c:['Geologia']}
+      ]},
+      { q:'Em que tipo de tarefa você se sai melhor?', o:[
+        {t:'Resolver problemas com cálculos precisos', c:['Física']},
+        {t:'Investigar o passado geológico da Terra', c:['Geologia']},
+        {t:'Estudar ecossistemas marinhos', c:['Oceanografia']},
+        {t:'Interpretar dados atmosféricos', c:['Meteorologia']}
+      ]},
+      { q:'Qual desses talentos você reconhece em você mesmo?', o:[
+        {t:'Observar e classificar a natureza', c:['Ciências Biológicas']},
+        {t:'Fazer experimentos com precisão técnica', c:['Química']},
+        {t:'Estudar ecossistemas marinhos', c:['Oceanografia']},
+        {t:'Interpretar dados atmosféricos', c:['Meteorologia']}
+      ]},
+      { q:'Se te pedissem para resolver um problema, qual abordagem você usaria?', o:[
+        {t:'Fazer experimentos com precisão técnica', c:['Química']},
+        {t:'Resolver problemas com cálculos precisos', c:['Física']},
+        {t:'Estudar ecossistemas marinhos', c:['Oceanografia']},
+        {t:'Interpretar dados atmosféricos', c:['Meteorologia']}
+      ]},
+      { q:'O que as pessoas mais elogiam em você?', o:[
+        {t:'Observar e classificar a natureza', c:['Ciências Biológicas']},
+        {t:'Investigar o passado geológico da Terra', c:['Geologia']},
+        {t:'Estudar ecossistemas marinhos', c:['Oceanografia']},
+        {t:'Interpretar dados atmosféricos', c:['Meteorologia']}
+      ]},
+      { q:'Onde você se imagina trabalhando no futuro?', o:[
+        {t:'Campo, trilhas, contato com a natureza', c:['Ciências Biológicas']},
+        {t:'Laboratório de pesquisa química', c:['Química']},
+        {t:'Laboratório ou centro de pesquisa', c:['Física']},
+        {t:'Campo, minas e estudos geológicos', c:['Geologia']}
+      ]},
+      { q:'Qual ambiente de trabalho mais combina com você?', o:[
+        {t:'Laboratório ou centro de pesquisa', c:['Física']},
+        {t:'Campo, minas e estudos geológicos', c:['Geologia']},
+        {t:'Embarcações e estações costeiras', c:['Oceanografia']},
+        {t:'Centro de previsão meteorológica', c:['Meteorologia']}
+      ]},
+      { q:'Em qual desses cenários você se sentiria mais à vontade?', o:[
+        {t:'Campo, trilhas, contato com a natureza', c:['Ciências Biológicas']},
+        {t:'Laboratório de pesquisa química', c:['Química']},
+        {t:'Embarcações e estações costeiras', c:['Oceanografia']},
+        {t:'Centro de previsão meteorológica', c:['Meteorologia']}
+      ]},
+      { q:'Se pudesse escolher seu local de trabalho ideal, qual seria?', o:[
+        {t:'Laboratório de pesquisa química', c:['Química']},
+        {t:'Laboratório ou centro de pesquisa', c:['Física']},
+        {t:'Embarcações e estações costeiras', c:['Oceanografia']},
+        {t:'Centro de previsão meteorológica', c:['Meteorologia']}
+      ]},
+      { q:'Qual rotina profissional mais combina com seu estilo?', o:[
+        {t:'Campo, trilhas, contato com a natureza', c:['Ciências Biológicas']},
+        {t:'Campo, minas e estudos geológicos', c:['Geologia']},
+        {t:'Embarcações e estações costeiras', c:['Oceanografia']},
+        {t:'Centro de previsão meteorológica', c:['Meteorologia']}
+      ]},
+      { q:'O que mais te motivaria em uma carreira?', o:[
+        {t:'Preservar a biodiversidade do planeta', c:['Ciências Biológicas']},
+        {t:'Desenvolver novos materiais e produtos', c:['Química']},
+        {t:'Entender os fenômenos que regem o universo', c:['Física']},
+        {t:'Compreender os recursos naturais do planeta', c:['Geologia']}
+      ]},
+      { q:'Qual causa você gostaria de defender profissionalmente?', o:[
+        {t:'Entender os fenômenos que regem o universo', c:['Física']},
+        {t:'Compreender os recursos naturais do planeta', c:['Geologia']},
+        {t:'Proteger e entender os oceanos', c:['Oceanografia']},
+        {t:'Ajudar a prever e entender mudanças climáticas', c:['Meteorologia']}
+      ]},
+      { q:'O que te faria sentir realizado no trabalho?', o:[
+        {t:'Preservar a biodiversidade do planeta', c:['Ciências Biológicas']},
+        {t:'Desenvolver novos materiais e produtos', c:['Química']},
+        {t:'Proteger e entender os oceanos', c:['Oceanografia']},
+        {t:'Ajudar a prever e entender mudanças climáticas', c:['Meteorologia']}
+      ]},
+      { q:'Se pudesse causar um impacto no mundo, qual seria?', o:[
+        {t:'Desenvolver novos materiais e produtos', c:['Química']},
+        {t:'Entender os fenômenos que regem o universo', c:['Física']},
+        {t:'Proteger e entender os oceanos', c:['Oceanografia']},
+        {t:'Ajudar a prever e entender mudanças climáticas', c:['Meteorologia']}
+      ]},
+      { q:'O que te move a querer seguir essa área?', o:[
+        {t:'Preservar a biodiversidade do planeta', c:['Ciências Biológicas']},
+        {t:'Compreender os recursos naturais do planeta', c:['Geologia']},
+        {t:'Proteger e entender os oceanos', c:['Oceanografia']},
+        {t:'Ajudar a prever e entender mudanças climáticas', c:['Meteorologia']}
+      ]},
+      { q:'No seu dia a dia ideal de trabalho, você estaria...?', o:[
+        {t:'Coletando e analisando espécies e ecossistemas', c:['Ciências Biológicas']},
+        {t:'Conduzindo experimentos e testando substâncias', c:['Química']},
+        {t:'Modelando fenômenos físicos e realizando medições', c:['Física']},
+        {t:'Analisando formações rochosas e minerais', c:['Geologia']}
+      ]},
+      { q:'Qual dessas atividades você faria de bom grado?', o:[
+        {t:'Modelando fenômenos físicos e realizando medições', c:['Física']},
+        {t:'Analisando formações rochosas e minerais', c:['Geologia']},
+        {t:'Coletando dados em expedições marítimas', c:['Oceanografia']},
+        {t:'Monitorando e prevendo condições climáticas', c:['Meteorologia']}
+      ]},
+      { q:'Se surgisse um desafio no trabalho, qual você prefere enfrentar?', o:[
+        {t:'Coletando e analisando espécies e ecossistemas', c:['Ciências Biológicas']},
+        {t:'Conduzindo experimentos e testando substâncias', c:['Química']},
+        {t:'Coletando dados em expedições marítimas', c:['Oceanografia']},
+        {t:'Monitorando e prevendo condições climáticas', c:['Meteorologia']}
+      ]},
+      { q:'Qual tarefa prática mais te agrada?', o:[
+        {t:'Conduzindo experimentos e testando substâncias', c:['Química']},
+        {t:'Modelando fenômenos físicos e realizando medições', c:['Física']},
+        {t:'Coletando dados em expedições marítimas', c:['Oceanografia']},
+        {t:'Monitorando e prevendo condições climáticas', c:['Meteorologia']}
+      ]},
+      { q:'Imagine um dia comum de trabalho: o que você estaria fazendo?', o:[
+        {t:'Coletando e analisando espécies e ecossistemas', c:['Ciências Biológicas']},
+        {t:'Analisando formações rochosas e minerais', c:['Geologia']},
+        {t:'Coletando dados em expedições marítimas', c:['Oceanografia']},
+        {t:'Monitorando e prevendo condições climáticas', c:['Meteorologia']}
+      ]}
+    ]
+  },
+  { id:'linguagens', name:'Linguagens', tone:'--linguagens', toneInk:'--linguagens-ink',
+    courses:['Jornalismo','Publicidade e Propaganda','Letras','Design','Artes Visuais','Cinema e Audiovisual'],
+    questions:[
+      { q:'O que mais desperta seu interesse?', o:[
+        {t:'Investigar e contar histórias reais', c:['Jornalismo']},
+        {t:'Criar campanhas criativas para marcas', c:['Publicidade e Propaganda']},
+        {t:'Linguagem, literatura e ensino de idiomas', c:['Letras']},
+        {t:'Criar soluções visuais e produtos', c:['Design']}
+      ]},
+      { q:'Qual desses temas mais te atrai?', o:[
+        {t:'Linguagem, literatura e ensino de idiomas', c:['Letras']},
+        {t:'Criar soluções visuais e produtos', c:['Design']},
+        {t:'Pintura, escultura e expressão artística', c:['Artes Visuais']},
+        {t:'Roteiro e produção audiovisual', c:['Cinema e Audiovisual']}
+      ]},
+      { q:'Se você pudesse escolher um assunto para estudar a fundo, qual seria?', o:[
+        {t:'Investigar e contar histórias reais', c:['Jornalismo']},
+        {t:'Criar campanhas criativas para marcas', c:['Publicidade e Propaganda']},
+        {t:'Pintura, escultura e expressão artística', c:['Artes Visuais']},
+        {t:'Roteiro e produção audiovisual', c:['Cinema e Audiovisual']}
+      ]},
+      { q:'O que prende mais a sua atenção?', o:[
+        {t:'Criar campanhas criativas para marcas', c:['Publicidade e Propaganda']},
+        {t:'Linguagem, literatura e ensino de idiomas', c:['Letras']},
+        {t:'Pintura, escultura e expressão artística', c:['Artes Visuais']},
+        {t:'Roteiro e produção audiovisual', c:['Cinema e Audiovisual']}
+      ]},
+      { q:'Qual desses campos de conhecimento mais te fascina?', o:[
+        {t:'Investigar e contar histórias reais', c:['Jornalismo']},
+        {t:'Criar soluções visuais e produtos', c:['Design']},
+        {t:'Pintura, escultura e expressão artística', c:['Artes Visuais']},
+        {t:'Roteiro e produção audiovisual', c:['Cinema e Audiovisual']}
+      ]},
+      { q:'Qual habilidade mais te representa?', o:[
+        {t:'Escrever e apurar fatos com rigor', c:['Jornalismo']},
+        {t:'Convencer e criar conceitos originais', c:['Publicidade e Propaganda']},
+        {t:'Escrever e analisar textos com profundidade', c:['Letras']},
+        {t:'Ter um olhar estético apurado', c:['Design']}
+      ]},
+      { q:'Em que tipo de tarefa você se sai melhor?', o:[
+        {t:'Escrever e analisar textos com profundidade', c:['Letras']},
+        {t:'Ter um olhar estético apurado', c:['Design']},
+        {t:'Criar e expressar ideias visualmente', c:['Artes Visuais']},
+        {t:'Contar histórias através de imagens em movimento', c:['Cinema e Audiovisual']}
+      ]},
+      { q:'Qual desses talentos você reconhece em você mesmo?', o:[
+        {t:'Escrever e apurar fatos com rigor', c:['Jornalismo']},
+        {t:'Convencer e criar conceitos originais', c:['Publicidade e Propaganda']},
+        {t:'Criar e expressar ideias visualmente', c:['Artes Visuais']},
+        {t:'Contar histórias através de imagens em movimento', c:['Cinema e Audiovisual']}
+      ]},
+      { q:'Se te pedissem para resolver um problema, qual abordagem você usaria?', o:[
+        {t:'Convencer e criar conceitos originais', c:['Publicidade e Propaganda']},
+        {t:'Escrever e analisar textos com profundidade', c:['Letras']},
+        {t:'Criar e expressar ideias visualmente', c:['Artes Visuais']},
+        {t:'Contar histórias através de imagens em movimento', c:['Cinema e Audiovisual']}
+      ]},
+      { q:'O que as pessoas mais elogiam em você?', o:[
+        {t:'Escrever e apurar fatos com rigor', c:['Jornalismo']},
+        {t:'Ter um olhar estético apurado', c:['Design']},
+        {t:'Criar e expressar ideias visualmente', c:['Artes Visuais']},
+        {t:'Contar histórias através de imagens em movimento', c:['Cinema e Audiovisual']}
+      ]},
+      { q:'Onde você se imagina trabalhando no futuro?', o:[
+        {t:'Redação de jornal ou portal de notícias', c:['Jornalismo']},
+        {t:'Agência de publicidade', c:['Publicidade e Propaganda']},
+        {t:'Escola, editora ou espaço de ensino de idiomas', c:['Letras']},
+        {t:'Estúdio de design', c:['Design']}
+      ]},
+      { q:'Qual ambiente de trabalho mais combina com você?', o:[
+        {t:'Escola, editora ou espaço de ensino de idiomas', c:['Letras']},
+        {t:'Estúdio de design', c:['Design']},
+        {t:'Ateliê ou espaço de produção artística', c:['Artes Visuais']},
+        {t:'Set de filmagem ou estúdio de produção', c:['Cinema e Audiovisual']}
+      ]},
+      { q:'Em qual desses cenários você se sentiria mais à vontade?', o:[
+        {t:'Redação de jornal ou portal de notícias', c:['Jornalismo']},
+        {t:'Agência de publicidade', c:['Publicidade e Propaganda']},
+        {t:'Ateliê ou espaço de produção artística', c:['Artes Visuais']},
+        {t:'Set de filmagem ou estúdio de produção', c:['Cinema e Audiovisual']}
+      ]},
+      { q:'Se pudesse escolher seu local de trabalho ideal, qual seria?', o:[
+        {t:'Agência de publicidade', c:['Publicidade e Propaganda']},
+        {t:'Escola, editora ou espaço de ensino de idiomas', c:['Letras']},
+        {t:'Ateliê ou espaço de produção artística', c:['Artes Visuais']},
+        {t:'Set de filmagem ou estúdio de produção', c:['Cinema e Audiovisual']}
+      ]},
+      { q:'Qual rotina profissional mais combina com seu estilo?', o:[
+        {t:'Redação de jornal ou portal de notícias', c:['Jornalismo']},
+        {t:'Estúdio de design', c:['Design']},
+        {t:'Ateliê ou espaço de produção artística', c:['Artes Visuais']},
+        {t:'Set de filmagem ou estúdio de produção', c:['Cinema e Audiovisual']}
+      ]},
+      { q:'O que mais te motivaria em uma carreira?', o:[
+        {t:'Informar e dar voz a quem precisa ser ouvido', c:['Jornalismo']},
+        {t:'Conectar marcas e pessoas através de ideias', c:['Publicidade e Propaganda']},
+        {t:'Difundir a leitura e a literatura', c:['Letras']},
+        {t:'Tornar experiências mais funcionais e bonitas', c:['Design']}
+      ]},
+      { q:'Qual causa você gostaria de defender profissionalmente?', o:[
+        {t:'Difundir a leitura e a literatura', c:['Letras']},
+        {t:'Tornar experiências mais funcionais e bonitas', c:['Design']},
+        {t:'Expressar sentimentos e ideias através da arte', c:['Artes Visuais']},
+        {t:'Emocionar e contar histórias através do vídeo', c:['Cinema e Audiovisual']}
+      ]},
+      { q:'O que te faria sentir realizado no trabalho?', o:[
+        {t:'Informar e dar voz a quem precisa ser ouvido', c:['Jornalismo']},
+        {t:'Conectar marcas e pessoas através de ideias', c:['Publicidade e Propaganda']},
+        {t:'Expressar sentimentos e ideias através da arte', c:['Artes Visuais']},
+        {t:'Emocionar e contar histórias através do vídeo', c:['Cinema e Audiovisual']}
+      ]},
+      { q:'Se pudesse causar um impacto no mundo, qual seria?', o:[
+        {t:'Conectar marcas e pessoas através de ideias', c:['Publicidade e Propaganda']},
+        {t:'Difundir a leitura e a literatura', c:['Letras']},
+        {t:'Expressar sentimentos e ideias através da arte', c:['Artes Visuais']},
+        {t:'Emocionar e contar histórias através do vídeo', c:['Cinema e Audiovisual']}
+      ]},
+      { q:'O que te move a querer seguir essa área?', o:[
+        {t:'Informar e dar voz a quem precisa ser ouvido', c:['Jornalismo']},
+        {t:'Tornar experiências mais funcionais e bonitas', c:['Design']},
+        {t:'Expressar sentimentos e ideias através da arte', c:['Artes Visuais']},
+        {t:'Emocionar e contar histórias através do vídeo', c:['Cinema e Audiovisual']}
+      ]},
+      { q:'No seu dia a dia ideal de trabalho, você estaria...?', o:[
+        {t:'Apurando fatos e produzindo reportagens', c:['Jornalismo']},
+        {t:'Desenvolvendo campanhas e conceitos criativos', c:['Publicidade e Propaganda']},
+        {t:'Estudando e ensinando língua e literatura', c:['Letras']},
+        {t:'Criando identidade visual e interfaces', c:['Design']}
+      ]},
+      { q:'Qual dessas atividades você faria de bom grado?', o:[
+        {t:'Estudando e ensinando língua e literatura', c:['Letras']},
+        {t:'Criando identidade visual e interfaces', c:['Design']},
+        {t:'Produzindo obras e expressões visuais', c:['Artes Visuais']},
+        {t:'Dirigindo, filmando ou editando produções audiovisuais', c:['Cinema e Audiovisual']}
+      ]},
+      { q:'Se surgisse um desafio no trabalho, qual você prefere enfrentar?', o:[
+        {t:'Apurando fatos e produzindo reportagens', c:['Jornalismo']},
+        {t:'Desenvolvendo campanhas e conceitos criativos', c:['Publicidade e Propaganda']},
+        {t:'Produzindo obras e expressões visuais', c:['Artes Visuais']},
+        {t:'Dirigindo, filmando ou editando produções audiovisuais', c:['Cinema e Audiovisual']}
+      ]},
+      { q:'Qual tarefa prática mais te agrada?', o:[
+        {t:'Desenvolvendo campanhas e conceitos criativos', c:['Publicidade e Propaganda']},
+        {t:'Estudando e ensinando língua e literatura', c:['Letras']},
+        {t:'Produzindo obras e expressões visuais', c:['Artes Visuais']},
+        {t:'Dirigindo, filmando ou editando produções audiovisuais', c:['Cinema e Audiovisual']}
+      ]},
+      { q:'Imagine um dia comum de trabalho: o que você estaria fazendo?', o:[
+        {t:'Apurando fatos e produzindo reportagens', c:['Jornalismo']},
+        {t:'Criando identidade visual e interfaces', c:['Design']},
+        {t:'Produzindo obras e expressões visuais', c:['Artes Visuais']},
+        {t:'Dirigindo, filmando ou editando produções audiovisuais', c:['Cinema e Audiovisual']}
+      ]}
+    ]
+  },
+  { id:'exatas', name:'Exatas', tone:'--exatas', toneInk:'--exatas-ink',
+    courses:['Engenharia Civil','Engenharia de Produção','Engenharia Mecânica','Engenharia de Computação','Ciência da Computação','Arquitetura e Urbanismo','Sistemas de Informação','Matemática'],
+    questions:[
+      { q:'O que mais desperta seu interesse?', o:[
+        {t:'Prédios, pontes e estruturas', c:['Engenharia Civil']},
+        {t:'Processos e sistemas de produção mais eficientes', c:['Engenharia de Produção']},
+        {t:'Máquinas, motores e mecanismos', c:['Engenharia Mecânica']},
+        {t:'Hardware e sistemas embarcados', c:['Engenharia de Computação']}
+      ]},
+      { q:'Qual desses temas mais te atrai?', o:[
+        {t:'Programas e sistemas de software', c:['Ciência da Computação']},
+        {t:'Projetar espaços com estética e função', c:['Arquitetura e Urbanismo']},
+        {t:'Gestão de tecnologia dentro de empresas', c:['Sistemas de Informação']},
+        {t:'Números, lógica e teoremas', c:['Matemática']}
+      ]},
+      { q:'Se você pudesse escolher um assunto para estudar a fundo, qual seria?', o:[
+        {t:'Prédios, pontes e estruturas', c:['Engenharia Civil']},
+        {t:'Máquinas, motores e mecanismos', c:['Engenharia Mecânica']},
+        {t:'Programas e sistemas de software', c:['Ciência da Computação']},
+        {t:'Gestão de tecnologia dentro de empresas', c:['Sistemas de Informação']}
+      ]},
+      { q:'O que prende mais a sua atenção?', o:[
+        {t:'Processos e sistemas de produção mais eficientes', c:['Engenharia de Produção']},
+        {t:'Hardware e sistemas embarcados', c:['Engenharia de Computação']},
+        {t:'Projetar espaços com estética e função', c:['Arquitetura e Urbanismo']},
+        {t:'Números, lógica e teoremas', c:['Matemática']}
+      ]},
+      { q:'Qual desses campos de conhecimento mais te fascina?', o:[
+        {t:'Prédios, pontes e estruturas', c:['Engenharia Civil']},
+        {t:'Hardware e sistemas embarcados', c:['Engenharia de Computação']},
+        {t:'Projetar espaços com estética e função', c:['Arquitetura e Urbanismo']},
+        {t:'Gestão de tecnologia dentro de empresas', c:['Sistemas de Informação']}
+      ]},
+      { q:'Qual habilidade mais te representa?', o:[
+        {t:'Calcular estruturas e resistência de materiais', c:['Engenharia Civil']},
+        {t:'Organizar processos com eficiência', c:['Engenharia de Produção']},
+        {t:'Entender como as máquinas funcionam', c:['Engenharia Mecânica']},
+        {t:'Integrar software e componentes eletrônicos', c:['Engenharia de Computação']}
+      ]},
+      { q:'Em que tipo de tarefa você se sai melhor?', o:[
+        {t:'Resolver problemas lógicos e abstratos', c:['Ciência da Computação']},
+        {t:'Desenhar e projetar espaços', c:['Arquitetura e Urbanismo']},
+        {t:'Unir tecnologia e gestão de negócios', c:['Sistemas de Informação']},
+        {t:'Resolver problemas lógicos e abstratos', c:['Matemática']}
+      ]},
+      { q:'Qual desses talentos você reconhece em você mesmo?', o:[
+        {t:'Calcular estruturas e resistência de materiais', c:['Engenharia Civil']},
+        {t:'Entender como as máquinas funcionam', c:['Engenharia Mecânica']},
+        {t:'Resolver problemas lógicos e abstratos', c:['Ciência da Computação']},
+        {t:'Unir tecnologia e gestão de negócios', c:['Sistemas de Informação']}
+      ]},
+      { q:'Se te pedissem para resolver um problema, qual abordagem você usaria?', o:[
+        {t:'Organizar processos com eficiência', c:['Engenharia de Produção']},
+        {t:'Integrar software e componentes eletrônicos', c:['Engenharia de Computação']},
+        {t:'Desenhar e projetar espaços', c:['Arquitetura e Urbanismo']},
+        {t:'Resolver problemas lógicos e abstratos', c:['Matemática']}
+      ]},
+      { q:'O que as pessoas mais elogiam em você?', o:[
+        {t:'Calcular estruturas e resistência de materiais', c:['Engenharia Civil']},
+        {t:'Integrar software e componentes eletrônicos', c:['Engenharia de Computação']},
+        {t:'Desenhar e projetar espaços', c:['Arquitetura e Urbanismo']},
+        {t:'Unir tecnologia e gestão de negócios', c:['Sistemas de Informação']}
+      ]},
+      { q:'Onde você se imagina trabalhando no futuro?', o:[
+        {t:'Canteiro de obras', c:['Engenharia Civil']},
+        {t:'Fábrica ou linha de produção', c:['Engenharia de Produção']},
+        {t:'Indústria e fábricas de equipamentos', c:['Engenharia Mecânica']},
+        {t:'Empresa de tecnologia ou indústria', c:['Engenharia de Computação']}
+      ]},
+      { q:'Qual ambiente de trabalho mais combina com você?', o:[
+        {t:'Empresa de tecnologia', c:['Ciência da Computação']},
+        {t:'Escritório de arquitetura', c:['Arquitetura e Urbanismo']},
+        {t:'Departamento de TI de uma empresa', c:['Sistemas de Informação']},
+        {t:'Universidade ou instituto de pesquisa', c:['Matemática']}
+      ]},
+      { q:'Em qual desses cenários você se sentiria mais à vontade?', o:[
+        {t:'Canteiro de obras', c:['Engenharia Civil']},
+        {t:'Indústria e fábricas de equipamentos', c:['Engenharia Mecânica']},
+        {t:'Empresa de tecnologia', c:['Ciência da Computação']},
+        {t:'Departamento de TI de uma empresa', c:['Sistemas de Informação']}
+      ]},
+      { q:'Se pudesse escolher seu local de trabalho ideal, qual seria?', o:[
+        {t:'Fábrica ou linha de produção', c:['Engenharia de Produção']},
+        {t:'Empresa de tecnologia ou indústria', c:['Engenharia de Computação']},
+        {t:'Escritório de arquitetura', c:['Arquitetura e Urbanismo']},
+        {t:'Universidade ou instituto de pesquisa', c:['Matemática']}
+      ]},
+      { q:'Qual rotina profissional mais combina com seu estilo?', o:[
+        {t:'Canteiro de obras', c:['Engenharia Civil']},
+        {t:'Empresa de tecnologia ou indústria', c:['Engenharia de Computação']},
+        {t:'Escritório de arquitetura', c:['Arquitetura e Urbanismo']},
+        {t:'Departamento de TI de uma empresa', c:['Sistemas de Informação']}
+      ]},
+      { q:'O que mais te motivaria em uma carreira?', o:[
+        {t:'Construir espaços seguros e duradouros', c:['Engenharia Civil']},
+        {t:'Tornar processos produtivos mais eficientes', c:['Engenharia de Produção']},
+        {t:'Criar e aperfeiçoar máquinas e equipamentos', c:['Engenharia Mecânica']},
+        {t:'Criar sistemas que unem hardware e software', c:['Engenharia de Computação']}
+      ]},
+      { q:'Qual causa você gostaria de defender profissionalmente?', o:[
+        {t:'Criar tecnologias que resolvem problemas reais', c:['Ciência da Computação']},
+        {t:'Planejar cidades e espaços mais humanos', c:['Arquitetura e Urbanismo']},
+        {t:'Tornar empresas mais eficientes com tecnologia', c:['Sistemas de Informação']},
+        {t:'Avançar o conhecimento matemático e científico', c:['Matemática']}
+      ]},
+      { q:'O que te faria sentir realizado no trabalho?', o:[
+        {t:'Construir espaços seguros e duradouros', c:['Engenharia Civil']},
+        {t:'Criar e aperfeiçoar máquinas e equipamentos', c:['Engenharia Mecânica']},
+        {t:'Criar tecnologias que resolvem problemas reais', c:['Ciência da Computação']},
+        {t:'Tornar empresas mais eficientes com tecnologia', c:['Sistemas de Informação']}
+      ]},
+      { q:'Se pudesse causar um impacto no mundo, qual seria?', o:[
+        {t:'Tornar processos produtivos mais eficientes', c:['Engenharia de Produção']},
+        {t:'Criar sistemas que unem hardware e software', c:['Engenharia de Computação']},
+        {t:'Planejar cidades e espaços mais humanos', c:['Arquitetura e Urbanismo']},
+        {t:'Avançar o conhecimento matemático e científico', c:['Matemática']}
+      ]},
+      { q:'O que te move a querer seguir essa área?', o:[
+        {t:'Construir espaços seguros e duradouros', c:['Engenharia Civil']},
+        {t:'Criar sistemas que unem hardware e software', c:['Engenharia de Computação']},
+        {t:'Planejar cidades e espaços mais humanos', c:['Arquitetura e Urbanismo']},
+        {t:'Tornar empresas mais eficientes com tecnologia', c:['Sistemas de Informação']}
+      ]},
+      { q:'No seu dia a dia ideal de trabalho, você estaria...?', o:[
+        {t:'Planejando e acompanhando construções', c:['Engenharia Civil']},
+        {t:'Otimizando fluxos e a gestão da produção', c:['Engenharia de Produção']},
+        {t:'Projetando e testando sistemas mecânicos', c:['Engenharia Mecânica']},
+        {t:'Desenvolvendo sistemas embarcados e eletrônicos', c:['Engenharia de Computação']}
+      ]},
+      { q:'Qual dessas atividades você faria de bom grado?', o:[
+        {t:'Programando e desenvolvendo softwares', c:['Ciência da Computação']},
+        {t:'Criando projetos arquitetônicos e urbanos', c:['Arquitetura e Urbanismo']},
+        {t:'Implementando e gerenciando sistemas de informação', c:['Sistemas de Informação']},
+        {t:'Pesquisando e ensinando matemática', c:['Matemática']}
+      ]},
+      { q:'Se surgisse um desafio no trabalho, qual você prefere enfrentar?', o:[
+        {t:'Planejando e acompanhando construções', c:['Engenharia Civil']},
+        {t:'Projetando e testando sistemas mecânicos', c:['Engenharia Mecânica']},
+        {t:'Programando e desenvolvendo softwares', c:['Ciência da Computação']},
+        {t:'Implementando e gerenciando sistemas de informação', c:['Sistemas de Informação']}
+      ]},
+      { q:'Qual tarefa prática mais te agrada?', o:[
+        {t:'Otimizando fluxos e a gestão da produção', c:['Engenharia de Produção']},
+        {t:'Desenvolvendo sistemas embarcados e eletrônicos', c:['Engenharia de Computação']},
+        {t:'Criando projetos arquitetônicos e urbanos', c:['Arquitetura e Urbanismo']},
+        {t:'Pesquisando e ensinando matemática', c:['Matemática']}
+      ]},
+      { q:'Imagine um dia comum de trabalho: o que você estaria fazendo?', o:[
+        {t:'Planejando e acompanhando construções', c:['Engenharia Civil']},
+        {t:'Desenvolvendo sistemas embarcados e eletrônicos', c:['Engenharia de Computação']},
+        {t:'Criando projetos arquitetônicos e urbanos', c:['Arquitetura e Urbanismo']},
+        {t:'Implementando e gerenciando sistemas de informação', c:['Sistemas de Informação']}
+      ]}
+    ]
+  }
+];
+
+let currentArea = null;
+let currentQuestion = 0;
+let answersHistory = [];
+let scores = {};
+
+const areaGrid = document.getElementById('area-grid');
+AREAS.forEach((area, i) => {
+  const btn = document.createElement('button');
+  btn.className = 'area-card';
+  btn.style.setProperty('--tone', `var(${area.tone})`);
+  btn.style.setProperty('--tone-ink', `var(${area.toneInk})`);
+  btn.onclick = () => startQuiz(area.id);
+  btn.innerHTML = `
+    <span class="num">0${i+1}</span>
+    <h3>${area.name}</h3>
+    <span class="count">${area.courses.length} cursos</span>
+  `;
+  areaGrid.appendChild(btn);
+});
+
+function goTo(screen){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + screen).classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function startQuiz(areaId){
+  currentArea = AREAS.find(a => a.id === areaId);
+  currentQuestion = 0;
+  answersHistory = [];
+  scores = {};
+  currentArea.courses.forEach(c => scores[c] = 0);
+  document.querySelectorAll('#screen-quiz').forEach(s => {
+    s.style.setProperty('--tone', `var(${currentArea.tone})`);
+    s.style.setProperty('--tone-ink', `var(${currentArea.toneInk})`);
+  });
+  goTo('quiz');
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const total = currentArea.questions.length;
+  const q = currentArea.questions[currentQuestion];
+  document.getElementById('quiz-badge').textContent = currentArea.name;
+  document.getElementById('quiz-counter').textContent = `Pergunta ${currentQuestion+1} de ${total}`;
+  document.getElementById('progress-fill').style.width = `${((currentQuestion)/total)*100}%`;
+  document.getElementById('question-text').textContent = q.q;
+
+  const letters = ['A','B','C','D'];
+  const optionsList = document.getElementById('options-list');
+  optionsList.innerHTML = '';
+  q.o.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="letter">${letters[idx]}</span><span>${opt.t}</span>`;
+    btn.onclick = () => selectOption(opt);
+    optionsList.appendChild(btn);
+  });
+
+  document.getElementById('btn-back-question').style.visibility = currentQuestion === 0 ? 'hidden' : 'visible';
+}
+
+function selectOption(opt){
+  answersHistory.push(opt);
+  opt.c.forEach(course => { scores[course] = (scores[course] || 0) + 1; });
+
+  if(currentQuestion < currentArea.questions.length - 1){
+    currentQuestion++;
+    renderQuestion();
+  } else {
+    document.getElementById('progress-fill').style.width = '100%';
+    setTimeout(showResults, 250);
+  }
+}
+
+function prevQuestion(){
+  if(currentQuestion === 0) return;
+  const last = answersHistory.pop();
+  if(last){ last.c.forEach(course => { scores[course] = Math.max(0, (scores[course]||0) - 1); }); }
+  currentQuestion--;
+  renderQuestion();
+}
+
+function showResults(){
+  document.querySelectorAll('#screen-results .ticket, #screen-results').forEach(s => {
+    s.style.setProperty('--tone', `var(${currentArea.tone})`);
+    s.style.setProperty('--tone-ink', `var(${currentArea.toneInk})`);
+  });
+
+  const sorted = Object.entries(scores).sort((a,b) => b[1]-a[1]);
+  const maxScore = sorted[0][1] || 1;
+  const top = sorted.slice(0,4);
+
+  document.getElementById('result-area-label').textContent = `Área escolhida — ${currentArea.name}`;
+
+  const list = document.getElementById('matches-list');
+  list.innerHTML = '';
+  top.forEach((entry, i) => {
+    const [course, score] = entry;
+    const pct = Math.round((score / maxScore) * 100);
+    const row = document.createElement('div');
+    row.className = 'match-row';
+    row.innerHTML = `
+      <span class="match-rank">${i+1}</span>
+      <span class="match-name">${course}</span>
+      <div class="match-bar-track"><div class="match-bar-fill" style="width:${Math.min(pct,100)}%"></div></div>
+      <span class="match-pct">${Math.min(pct,100)}%</span>
+    `;
+    list.appendChild(row);
+  });
+
+  goTo('results');
+}
+
+function restartQuiz(){
+  startQuiz(currentArea.id);
+}
+</script>
+</body>
+</html>
